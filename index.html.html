@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0614">
+<title>Saqib Mahmood — Digital Content Creator | Video Editor | Graphic Designer</title>
+<meta name="description" content="Saqib Mahmood — Digital Content Creator, Video Editor, Graphic Designer and AI-Powered Content Specialist. Video ads, social content, e-commerce creative and AI content.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,500;1,600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg:#0a0614; --bg2:#110a21; --card:#160d2b; --line:rgba(167,139,250,.18);
+  --text:#ece8f7; --muted:#a69fc0; --p1:#8b5cf6; --p2:#a78bfa; --p3:#c026d3;
+  --grad:linear-gradient(135deg,#7c3aed,#c026d3);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:Inter,sans-serif;line-height:1.65;min-height:100vh;overflow-x:hidden;
+  background-image:radial-gradient(600px 400px at 85% -5%,rgba(139,92,246,.22),transparent 60%),radial-gradient(500px 400px at -5% 40%,rgba(192,38,211,.12),transparent 60%);
+  background-attachment:fixed}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:Syne,sans-serif;line-height:1.1;letter-spacing:-.02em}
+h1 em,h2 em,h3 em{font-family:'Playfair Display',serif;font-style:italic;font-weight:600;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.08em}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(10,6,20,.78);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(160deg,#ddd0ff,#a78bfa);overflow:hidden;box-shadow:0 0 24px rgba(139,92,246,.5);flex:none}
+.logo img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;mix-blend-mode:multiply}
+.brand b{display:block;font-family:Syne;font-size:17px;line-height:1.1}
+.brand small{color:var(--muted);font-size:11px;letter-spacing:.04em}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a{padding:9px 14px;border-radius:999px;font-size:14px;font-weight:500;color:var(--muted);transition:.2s;white-space:nowrap}
+.nav-links a:hover{color:#fff;background:rgba(139,92,246,.15)}
+.nav-links a.active{color:#fff;background:var(--grad);box-shadow:0 6px 20px rgba(139,92,246,.35)}
+.menu-btn{display:none;background:none;border:1px solid var(--line);color:var(--text);width:42px;height:42px;border-radius:10px;font-size:20px;cursor:pointer}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:999px;font-weight:600;font-size:15px;border:1px solid transparent;cursor:pointer;transition:.25s;font-family:Inter}
+.btn.primary{background:var(--grad);color:#fff;box-shadow:0 8px 30px rgba(139,92,246,.35)}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(192,38,211,.45)}
+.btn.ghost{border-color:var(--line);background:rgba(139,92,246,.06)}
+.btn.ghost:hover{border-color:var(--p2);background:rgba(139,92,246,.15)}
+
+/* pages */
+.page{display:none;padding:70px 0 90px;animation:fade .5s ease}
+.page.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.eyebrow{color:var(--p2);font-weight:600;letter-spacing:.18em;font-size:12px;text-transform:uppercase;margin-bottom:14px}
+.lead{color:var(--muted);font-size:18px;max-width:640px}
+.sec-title{font-size:clamp(34px,6vw,60px);margin-bottom:16px;text-transform:uppercase}
+.sec-title em{text-transform:none}
+
+/* hero */
+.hero{min-height:calc(100vh - 72px);display:flex;align-items:center;padding:40px 0}
+.hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:50px;align-items:center}
+.hero h1{font-size:clamp(46px,9vw,98px);margin-bottom:22px}
+.tags{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+.tag{border:1px solid var(--line);background:rgba(139,92,246,.08);padding:6px 14px;border-radius:999px;font-size:13px;color:var(--p2)}
+.cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+.avatar{aspect-ratio:1/1.05;border-radius:28px;border:1px solid rgba(167,139,250,.45);background:linear-gradient(160deg,#e4d9ff 0%,#a78bfa 55%,#7c3aed 100%);position:relative;overflow:hidden;box-shadow:0 0 80px rgba(139,92,246,.4)}
+.avatar img{width:100%;height:100%;object-fit:cover;object-position:50% 15%;position:absolute;inset:0;mix-blend-mode:multiply}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px;max-width:520px}
+.stat{border:1px solid var(--line);background:var(--card);border-radius:16px;padding:16px}
+.stat b{font-family:Syne;font-size:28px;display:block;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat small{color:var(--muted);font-size:12px}
+
+/* clients */
+.clients{margin-top:60px;text-align:center}
+.clients h3{font-size:14px;letter-spacing:.2em;color:var(--muted);font-family:Inter;font-weight:600;margin-bottom:22px}
+.client-row{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+.client{border:1px solid var(--line);background:var(--card);padding:14px 26px;border-radius:14px;font-family:Syne;font-weight:700;color:var(--p2)}
+
+/* about */
+.about-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:50px;align-items:start;margin-top:40px}
+.about-grid p{color:var(--muted);margin-bottom:18px}
+.skills{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.timeline{margin-top:70px}
+.job{border-left:2px solid var(--line);padding:0 0 34px 26px;position:relative}
+.job::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--grad);box-shadow:0 0 14px var(--p1)}
+.job h3{font-size:22px;margin-bottom:2px}
+.job .meta{color:var(--p2);font-size:14px;margin-bottom:10px}
+.job ul{color:var(--muted);padding-left:18px;font-size:15px}
+.job li{margin-bottom:4px}
+
+/* cards */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:32px;position:relative;overflow:hidden;transition:.3s}
+.card:hover{transform:translateY(-6px);border-color:var(--p1);box-shadow:0 20px 50px rgba(124,58,237,.25)}
+.card .num{font-family:Syne;font-size:54px;font-weight:800;color:rgba(167,139,250,.18);position:absolute;right:22px;top:14px}
+.card h3{font-size:23px;margin:10px 0 12px}
+.card p{color:var(--muted);font-size:15px;margin-bottom:16px}
+.card ul{list-style:none;margin-bottom:22px}
+.card li{padding:6px 0 6px 24px;position:relative;font-size:14.5px;color:var(--text)}
+.card li::before{content:"✦";position:absolute;left:0;color:var(--p1)}
+.link{color:var(--p2);font-weight:600}
+.link:hover{color:#fff}
+
+/* gallery */
+.gallery{columns:3;column-gap:20px;margin-top:44px}
+.tile{break-inside:avoid;margin-bottom:20px;border-radius:20px;overflow:hidden;border:1px solid var(--line);position:relative;background:var(--card);transition:.3s}
+.tile:hover{transform:scale(1.02);border-color:var(--p1)}
+.tile img{width:100%;display:block}
+.ph{display:flex;flex-direction:column;justify-content:flex-end;padding:20px;color:#fff;font-family:Syne;font-weight:700}
+.ph small{font-family:Inter;font-weight:400;opacity:.8}
+.ph.a{aspect-ratio:1/1.2;background:linear-gradient(160deg,#4c1d95,#c026d3)}
+.ph.b{aspect-ratio:1/1;background:linear-gradient(160deg,#1e1b4b,#7c3aed)}
+.ph.c{aspect-ratio:9/12;background:linear-gradient(160deg,#581c87,#312e81)}
+.ph.d{aspect-ratio:1/.8;background:linear-gradient(160deg,#701a75,#4c1d95)}
+.ph.e{aspect-ratio:1/1.1;background:linear-gradient(160deg,#312e81,#a21caf)}
+.ph.f{aspect-ratio:1/.9;background:linear-gradient(160deg,#3b0764,#6d28d9)}
+.note{margin-top:30px;color:var(--muted);font-size:13px;border:1px dashed var(--line);padding:12px 16px;border-radius:12px}
+
+/* work */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin:60px 0}
+.split.rev>:first-child{order:2}
+.shot{aspect-ratio:16/10;border-radius:22px;border:1px solid var(--line);background:linear-gradient(135deg,#2e1065,#701a75);display:grid;place-items:center;color:rgba(255,255,255,.85);font-family:Syne;font-weight:700;overflow:hidden}
+.shot img{width:100%;height:100%;object-fit:cover}
+.split h3{font-size:clamp(26px,4vw,38px);margin-bottom:14px}
+.split p{color:var(--muted);margin-bottom:20px}
+.pills{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.pill{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:14px;text-align:center;font-size:13px;color:var(--muted)}
+.pill b{display:block;color:var(--text);font-family:Syne;font-size:15px}
+.cta-box{text-align:center;background:var(--card);border:1px solid var(--line);border-radius:28px;padding:50px 24px;margin-top:40px}
+.cta-box h3{font-size:clamp(26px,4vw,40px);margin-bottom:12px}
+.cta-box p{color:var(--muted);margin-bottom:24px}
+
+/* blog */
+.post-card{display:block;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:30px;margin-top:36px;transition:.3s}
+.post-card:hover{border-color:var(--p1);transform:translateY(-4px)}
+.post-card h3{font-size:26px;margin-bottom:8px}
+.post-card p{color:var(--muted)}
+.post-card .m{color:var(--p2);font-size:13px;margin-top:12px}
+.article{max-width:760px;margin:0 auto}
+.article h1{font-size:clamp(34px,6vw,56px);margin:18px 0 10px}
+.article h2{font-size:26px;margin:36px 0 12px}
+.article p,.article li{color:var(--muted);margin-bottom:14px}
+.article ul{padding-left:20px}
+.article strong{color:var(--text)}
+.article a{color:var(--p2);text-decoration:underline}
+.meta-line{color:var(--p2);font-size:14px}
+
+/* forms */
+form{display:grid;gap:16px;margin-top:30px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label{font-size:13px;color:var(--muted);font-weight:500;display:block;margin-bottom:6px}
+input,textarea,select{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:13px 15px;color:var(--text);font:inherit;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:var(--p1);box-shadow:0 0 0 3px rgba(139,92,246,.2)}
+textarea{min-height:140px;resize:vertical}
+.contact-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:50px;margin-top:30px}
+.info p{color:var(--muted);margin-bottom:8px}
+.info a{color:var(--p2)}
+.socials{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+.socials a{border:1px solid var(--line);background:var(--card);padding:10px 18px;border-radius:999px;font-size:14px;transition:.25s}
+.socials a:hover{border-color:var(--p1);color:#fff;background:rgba(139,92,246,.2)}
+
+footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:var(--muted);font-size:14px}
+
+@media(max-width:900px){
+  .hero-grid,.about-grid,.split,.contact-grid{grid-template-columns:1fr}
+  .split.rev>:first-child{order:0}
+  .grid3{grid-template-columns:1fr}
+  .gallery{columns:2}
+  .avatar{max-width:340px}
+}
+@media(max-width:560px){
+  .gallery{columns:1}.row2{grid-template-columns:1fr}.pills{grid-template-columns:1fr}
+}
+@media(max-width:1020px){
+  .menu-btn{display:block}
+  .nav-links{display:none;position:absolute;left:0;right:0;top:72px;flex-direction:column;align-items:stretch;gap:2px;padding:12px 20px 16px;background:rgba(10,6,20,.97);border-bottom:1px solid var(--line)}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:12px 16px;border-radius:12px;font-size:15px}
+}
+
+/* ===== new blueprint components ===== */
+.blk{margin-top:90px}
+.blk>h2{font-size:clamp(28px,4.5vw,46px);margin-bottom:12px}
+.auto{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-top:34px}
+.mini{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;transition:.3s}
+.mini:hover{border-color:var(--p1);transform:translateY(-4px)}
+.mini b{font-family:Syne;font-size:18px;display:block;margin-bottom:6px}
+.mini p{color:var(--muted);font-size:14px}
+.mini .n{font-family:Syne;font-size:30px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;display:block;margin-bottom:6px}
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.fbtn{border:1px solid var(--line);background:rgba(139,92,246,.06);color:var(--muted);padding:9px 18px;border-radius:999px;font:500 14px Inter;cursor:pointer;transition:.2s}
+.fbtn:hover{color:#fff;border-color:var(--p2)}
+.fbtn.on{background:var(--grad);border-color:transparent;color:#fff}
+.wgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:34px}
+.pcard{display:block;background:var(--card);border:1px solid var(--line);border-radius:24px;overflow:hidden;transition:.3s}
+a.pcard:hover{transform:translateY(-6px);border-color:var(--p1);box-shadow:0 20px 50px rgba(124,58,237,.25)}
+.pcard.feat{grid-column:1/-1}
+.pcard.feat .ph.h{aspect-ratio:21/9}
+.pcard .pb{padding:22px 26px 26px}
+.pcard .lab{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--p2);font-weight:600}
+.pcard h3{font-size:25px;margin:6px 0}
+.pcard p{color:var(--muted);font-size:14.5px;margin-bottom:10px}
+.badge{display:inline-block;background:var(--grad);color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;padding:4px 12px;border-radius:999px;margin-bottom:8px}
+.ph.h{aspect-ratio:16/10;background:linear-gradient(135deg,#2e1065,#701a75)}
+.pm img,.pm video,.tile video{width:100%;display:block}
+.pm img,.pm video{aspect-ratio:16/10;object-fit:cover}
+.back{display:inline-block;margin-bottom:22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.gal h3{font-size:24px;margin:50px 0 0}
+.gal .gallery{margin-top:18px}
+.fgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:30px}
+.fc .lab{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--p2);font-weight:600;margin:10px 2px 2px}
+.fc p{color:var(--muted);font-size:13px;margin:0 2px 8px}
+.fc .ph.h{aspect-ratio:1/1}
+.fc .tile{margin:0}
+.checks{list-style:none;margin-top:14px}
+.checks li{padding:7px 0 7px 26px;position:relative;color:var(--muted)}
+.checks li::before{content:"✦";position:absolute;left:0;color:var(--p1)}
+@media(max-width:900px){.wgrid{grid-template-columns:1fr}.fgrid{grid-template-columns:repeat(2,1fr)}.pcard.feat .ph.h{aspect-ratio:16/10}}
+@media(max-width:480px){.fgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#/">
+      <div class="logo"><img src="profile.jpg" alt="Saqib Mahmood"></div>
+      <div><b>Saqib Mahmood</b><small>Digital Content Creator</small></div>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#/" data-r="home">Home</a>
+      <a href="#/work" data-r="work">Work</a>
+      <a href="#/services" data-r="services">Services</a>
+      <a href="#/about" data-r="about">About</a>
+      <a href="#/contact" data-r="contact">Contact</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HOME ============ -->
+<section class="page show" id="home">
+  <div class="wrap">
+    <!-- 1. HERO -->
+    <div class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Portfolio · 2026</div>
+          <h1>Content that gets brands <em>noticed</em></h1>
+          <div class="tags">
+            <span class="tag">Video Ads</span><span class="tag">Social Content</span>
+            <span class="tag">E-commerce Creative</span><span class="tag">AI Content</span>
+          </div>
+          <p class="lead">I'm Saqib Mahmood — a Digital Content Creator, Video Editor, Graphic Designer and AI-Powered Content Specialist. I build complete content systems for brands: ads, social, e-commerce, video and design.</p>
+          <div class="cta">
+            <a class="btn primary" href="#/work">View My Work →</a>
+            <a class="btn ghost" href="#/contact">Let's Work Together</a>
+          </div>
+          <div class="stats">
+            <div class="stat"><b>3+</b><small>Years experience</small></div>
+            <div class="stat"><b>Video+</b><small>Design, one workflow</small></div>
+            <div class="stat"><b>AI</b><small>Assisted production</small></div>
+          </div>
+        </div>
+        <div class="avatar"><img src="profile.jpg" alt="Saqib Mahmood"></div>
+      </div>
+    </div>
+
+    <!-- 2. CLIENT STRIP -->
+    <div class="clients">
+      <h3>BRANDS &amp; TEAMS I'VE WORKED WITH</h3>
+      <div class="client-row" id="clientRow"></div>
+    </div>
+
+    <!-- 3. SELECTED WORK -->
+    <div class="blk">
+      <div class="eyebrow">Proof first</div>
+      <h2 class="sec-title" style="font-size:clamp(30px,5vw,50px)">Selected <em>work</em></h2>
+      <p class="lead">Real projects, grouped by client. Open any card to see the full project.</p>
+      <div class="wgrid" id="homeWork"></div>
+      <div style="text-align:center;margin-top:30px"><a class="btn ghost" href="#/work">See all work →</a></div>
+    </div>
+
+    <!-- 4. WHAT I DO -->
+    <div class="blk">
+      <div class="eyebrow">What I do</div>
+      <h2 class="sec-title" style="font-size:clamp(30px,5vw,50px)">One creative, <em>whole system</em></h2>
+      <div class="auto" id="doGrid"></div>
+      <p style="margin-top:22px"><a class="link" href="#/services">Full service details →</a></p>
+    </div>
+
+    <!-- 5. WHY ME -->
+    <div class="blk">
+      <div class="eyebrow">Why clients work with me</div>
+      <h2 class="sec-title" style="font-size:clamp(30px,5vw,50px)">Built for <em>results</em></h2>
+      <div class="auto" id="whyGrid"></div>
+    </div>
+
+    <!-- 6. PROCESS -->
+    <div class="blk">
+      <div class="eyebrow">Process</div>
+      <h2 class="sec-title" style="font-size:clamp(30px,5vw,50px)">How I <em>work</em></h2>
+      <div class="auto" id="stepGrid"></div>
+    </div>
+
+    <!-- 7. TESTIMONIALS — hidden until you have real ones.
+         To show: delete the word "hidden" below and put a real client quote in each card. Never use fake testimonials. -->
+    <div class="blk" id="testimonials" hidden>
+      <div class="eyebrow">Client feedback</div>
+      <h2 class="sec-title" style="font-size:clamp(30px,5vw,50px)">What clients <em>say</em></h2>
+      <div class="auto">
+        <div class="mini"><p>“Real client feedback goes here.”</p><b style="margin-top:12px;font-size:15px">Client name · Brand</b></div>
+      </div>
+    </div>
+
+    <!-- 8. FINAL CTA -->
+    <div class="cta-box" style="margin-top:90px">
+      <h3>Need creative content for your <em>brand?</em></h3>
+      <p>Tell me about your product, your audience and your goal — I'll plan the content to match.</p>
+      <a class="btn primary" href="#/contact">Start a Project →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WORK HUB ============ -->
+<section class="page" id="work">
+  <div class="wrap">
+    <div class="eyebrow">Portfolio</div>
+    <h2 class="sec-title">Selected <em>work</em></h2>
+    <p class="lead">Real projects across advertising, video, social media, e-commerce and design.</p>
+    <div class="filters" id="filters"></div>
+    <div class="wgrid" id="workGrid"></div>
+
+    <div class="blk">
+      <div class="eyebrow">Smaller projects</div>
+      <h2 class="sec-title" style="font-size:clamp(28px,4.5vw,46px)">Selected <em>freelance work</em></h2>
+      <p class="lead">Grouped by service type, not client name. Visual first.</p>
+      <div class="fgrid" id="freeGrid"></div>
+    </div>
+
+    <div class="cta-box">
+      <h3>Want results like this for your <em>brand?</em></h3>
+      <p>Send me a message and let's plan your next campaign.</p>
+      <a class="btn primary" href="#/contact">Contact me →</a>
+      <a class="btn ghost" href="#/services">See my services</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECT (case study template, filled by JS) ============ -->
+<section class="page" id="project"><div class="wrap" id="projectBody"></div></section>
+
+<!-- ============ SERVICES ============ -->
+<section class="page" id="services">
+  <div class="wrap">
+    <div class="eyebrow">What you can hire me for</div>
+    <h2 class="sec-title">My <em>Services</em></h2>
+    <p class="lead">Services explain what you can hire me for. The Work page proves I can do it.</p>
+    <div class="grid3" id="svcGrid"></div>
+    <div class="cta-box">
+      <h3>Have a project in <em>mind?</em></h3>
+      <p>Send me a message and let's plan the content your brand needs.</p>
+      <a class="btn primary" href="#/contact">Contact me →</a>
+      <a class="btn ghost" href="#/work">See my work</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="page" id="about">
+  <div class="wrap">
+    <div class="eyebrow">Get to know me</div>
+    <h2 class="sec-title">About <em>me</em></h2>
+    <div class="about-grid">
+      <div class="avatar"><img src="profile.jpg" alt="Saqib Mahmood"></div>
+      <div>
+        <p>I'm Saqib Mahmood, a Digital Content Creator, Video Editor, Graphic Designer and AI-Powered Content Specialist based in Rabwah, Punjab, Pakistan. For 3+ years I've helped brands turn ideas into videos, ads, social posts and e-commerce visuals.</p>
+        <p>Many brands have a great product but weak visuals, or nice visuals with no strategy behind them. I offer both together — and I use AI where it genuinely speeds things up, then finish by hand so the work still feels human and on-brand.</p>
+        <p>I also run my own YouTube channel, which keeps me close to what actually holds an audience's attention.</p>
+        <div class="skills">
+          <span class="tag">Video Editing</span><span class="tag">Graphic Design</span><span class="tag">Thumbnail Design</span>
+          <span class="tag">AI Video Production</span><span class="tag">Ad Creatives</span><span class="tag">Social Media Content</span>
+          <span class="tag">Content Strategy</span><span class="tag">Product Photography</span>
+        </div>
+        <p style="margin-top:22px"><span class="meta-line">Tools I use:</span> Runway Gen-3 · Kling AI · Higgsfield AI · HeyGen</p>
+        <div class="cta"><a class="btn primary" href="#/contact">Let's Work Together</a><a class="btn ghost" href="#/work/youtube">My YouTube work</a></div>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <h2 class="sec-title" style="font-size:clamp(28px,4vw,44px)">My <em>experience</em></h2>
+      <div class="job"><h3>Creative Production Manager</h3><div class="meta">Website Planners · Sep 2026 – Present</div>
+        <ul><li>Video editing &amp; production, graphic design and social media content</li><li>Digital marketing assets and web content creation</li></ul></div>
+      <div class="job"><h3>Creative Social Media Video Editor &amp; Graphic Designer</h3><div class="meta">GatewayUrdu · Dec 2025 – Jul 2026</div>
+        <ul><li>Edited Reels, Shorts and UGC videos with AI-enhanced animations</li><li>Designed seasonal and regular post graphics, researched competitors and trends</li></ul></div>
+      <div class="job"><h3>Digital Content Creator &amp; Video Editor</h3><div class="meta">Crown Rides · Jan 2026 – Mar 2026</div>
+        <ul><li>Produced promo videos, reels and advertising creatives for digital campaigns</li><li>Designed website content and visuals aligned with the brand identity</li></ul></div>
+      <div class="job"><h3>Video Editor &amp; Content Strategist</h3><div class="meta">Skylite Networks · Mar 2025 – Present</div>
+        <ul><li>AI-generated and raw-footage video ads for Meta and Google Ads</li><li>Content calendars and creative direction for three international brands</li><li>Website banners, A+ content, email templates and Amazon/eStore listing visuals</li><li>Product photography and video editing lectures at Skylite Institute</li></ul></div>
+      <div class="job"><h3>Thumbnail Designer &amp; Content Strategist</h3><div class="meta">Talha Nas Vlogs · Feb 2025 – Apr 2025</div>
+        <ul><li>High-CTR, mobile-first thumbnails and YouTube SEO advice</li></ul></div>
+      <div class="job" style="padding-bottom:0"><h3>BS Computer Science</h3><div class="meta">Virtual University of Pakistan · 2025</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="page" id="contact">
+  <div class="wrap">
+    <div class="eyebrow">Get in touch</div>
+    <h2 class="sec-title">Let's <em>talk</em></h2>
+    <p class="lead">Tell me what you're working on and what you need help with.</p>
+    <div class="contact-grid">
+      <div class="info">
+        <p>Rabwah (Chenab Nagar), Punjab, Pakistan</p>
+        <p>Email: <a href="mailto:saqibmahmoodprof02@gmail.com">saqibmahmoodprof02@gmail.com</a></p>
+        <div class="socials">
+          <a href="https://www.linkedin.com/in/saqibmahoodcreator" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://www.youtube.com/@saqibrajtech" target="_blank" rel="noopener">YouTube</a>
+          <!-- Add more: <a href="https://instagram.com/yourhandle" target="_blank" rel="noopener">Instagram</a> -->
+        </div>
+      </div>
+      <form id="contactForm" style="margin-top:0">
+        <div class="row2">
+          <div><label>Name*</label><input name="name" required></div>
+          <div><label>Email*</label><input name="email" type="email" required></div>
+        </div>
+        <div><label>Company / Brand</label><input name="company"></div>
+        <div><label>What do you need help with?*</label>
+          <select name="need" required id="needSel"></select></div>
+        <div><label>Project details*</label><textarea name="details" required></textarea></div>
+        <div><label>Budget range (optional)</label><input name="budget" placeholder="e.g. $300 – $500"></div>
+        <button class="btn primary" type="submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer><div class="wrap">© 2026 Saqib Mahmood · Digital Content Creator | Video Editor | Graphic Designer | AI-Powered Content Specialist</div></footer>
+
+<script>
+const EMAIL="saqibmahmoodprof02@gmail.com";
+
+/* ============================================================
+   MEDIA SLOTS — add your posts & videos here, nothing else to edit.
+   1. Put the file in a "media" folder next to index.html
+   2. Add a line:  'slot-name': 'media/yourfile.jpg',   (.mp4 / .webm plays as video)
+   Every empty box on the site shows its slot name, e.g. "psw-hero" or "psw-g0-1".
+   ============================================================ */
+const MEDIA={
+  // 'psw-hero':'media/pink-salt-wall-hero.jpg',
+  // 'psw-g0-1':'media/psw-ad-1.jpg',
+  // 'psw-g1-1':'media/psw-reel-1.mp4',
+};
+
+const CATS={all:"All",advertising:"Advertising",video:"Video",social:"Social",ecommerce:"E-commerce",youtube:"YouTube",design:"Graphic Design",ai:"AI Content"};
+
+const PROJECTS=[
+ {s:"pink-salt-wall",n:"Pink Salt Wall",t:"Full Creative Production",c:["advertising","video","ecommerce","social","design","ai"],badge:"Flagship project",
+  d:"Ads, video, product visuals and social content — my broadest project.",
+  intro:"For Pink Salt Wall I handled creative production across paid advertising, video, e-commerce and social — from ad creatives and product visuals to reels and brand assets.",
+  items:[["Paid Advertising","Meta Ads, Google Ads and YouTube video creatives."],["Video Content","Product videos, social reels, UGC-style videos and AI-generated videos."],["E-commerce","Product photography, product graphics, A+ content, eStore assets and website banners."],["Social","Posts, reels, thumbnails and campaign creatives."],["Brand / Marketing","PDFs, logos, banners and other graphics."]],
+  gal:["Ad Creatives","Video / Reels","Product Photography","A+ Content","eStore / Website","Social Media","Banners / PDFs / Brand Assets"]},
+ {s:"skylite-networks",n:"Skylite Networks",t:"Video, Ads, Social & E-commerce",c:["advertising","video","social","ecommerce","ai"],
+  d:"Video & creative production across ads, social and e-commerce.",
+  intro:"Video and creative production for Skylite Networks: AI-generated and raw-footage ad creatives, social content with creative direction, and e-commerce visuals.",
+  items:[["Video ads","AI-generated and raw-footage creatives for Meta and Google."],["Social content","Content pipeline, calendars and creative direction."],["E-commerce visuals","Website banners, product graphics, A+ content and eStore assets."],["Product photography","Product shots and showcase videos."]],
+  gal:["AI & Raw-Footage Ad Creatives","Meta / Google Ad Work","Product Showcase, UGC-style & Cinematic Videos","Social Content","Banners, Graphics, A+ Content & Photography"]},
+ {s:"gatewayurdu",n:"GatewayUrdu",t:"Social Media Video & Graphic Content",c:["video","social","design","ai"],
+  d:"Reels, Shorts, UGC editing and daily social graphics.",
+  intro:"Social media video and graphic content for GatewayUrdu — video first, then graphics.",
+  items:[["Reels / Shorts","Short-form video built for social platforms."],["UGC editing","UGC-style video editing."],["AI-enhanced animations","AI used to add motion and polish."],["Social graphics","Regular posts plus seasonal and trending graphics."]],
+  gal:["Reels / Shorts","UGC Editing","AI-Enhanced Animations","Social Posts","Seasonal & Trending Graphics"]},
+ {s:"sphere-digital",n:"Sphere Digital",t:"Social Media & Brand Content",c:["video","social","design"],
+  d:"Reels, social posts and corporate content.",
+  intro:"Social media and brand content for Sphere Digital, from reels and posts to company-profile and corporate material.",
+  items:[["Reels","Short-form brand video."],["Social posts","Brand-aligned graphics."],["Corporate content","Company profile and corporate material."]],
+  gal:["Video","Social","Corporate"]},
+ {s:"youtube",n:"My YouTube / Creator Work",t:"Content, Thumbnails & Creative Experiments",c:["youtube","video","design","ai"],link:"https://www.youtube.com/@saqibrajtech",
+  d:"My own channel — proof I understand content as a creator.",
+  intro:"This is my own creator work, not a client project. It shows that I understand content from a creator's side: what gets a click, what holds attention and what's worth testing.",
+  items:[["Thumbnails","Mobile-first designs made to earn the click."],["Video editing","Long-form edits."],["Shorts / clips","Short-form cut-downs."],["Experiments","Content ideas and AI-assisted tests."]],
+  gal:["Thumbnails","Video Editing","Shorts / Clips","Content Ideas & Experiments","AI-Assisted Experiments"]},
+ {s:"crown-rides",n:"Crown Rides",t:"Promo Videos & Ad Creatives",c:["video","advertising","design"],page:false,
+  d:"Promo videos, reels and ad creatives, plus website visuals."},
+ {s:"talha-nas-vlogs",n:"Talha Nas Vlogs",t:"YouTube Thumbnails & Strategy",c:["youtube","design"],page:false,
+  d:"High-CTR, mobile-first thumbnails and YouTube SEO advice."}
+];
+
+const FREE=[["Talking Head","Clean, retention-focused talking-head edits."],["UGC","UGC-style video editing."],["Reel","Short-form reels."],["Shorts","YouTube Shorts."],["Long-form","Long-form video editing."],["Social Post","Social media post designs."],["Thumbnail","Thumbnail designs."],["Product Video","Product showcase videos."],["Corporate","Corporate and promotional videos."],["AI Video","AI video projects."]];
+
+const SERVICES=[
+ ["Ad Creative",["Meta Ads","Google Ads","YouTube Ads","Video Ad Creatives","UGC-style Ad Creatives","AI Ad Creatives","Ad Variations"]],
+ ["Social Media Content",["Reels","Shorts","Social Posts","Campaign Creatives","Content Design","Creative Direction"]],
+ ["E-commerce Creative",["Product Photography","Product Videos","A+ Content","Product Listing Graphics","eStore / Storefront Assets","Website Banners"]],
+ ["YouTube Content",["Long-form Editing","Shorts","Thumbnails","Content Support","YouTube Creative"]],
+ ["Graphic & Brand Content",["Social Graphics","Company Profiles","PDFs","Logos","Marketing Materials","Brand Graphics"]],
+ ["AI Content Production",["AI Video Production","AI-enhanced Edits","AI Creative Concepts","AI-generated Visual Content"]]
+];
+
+const DO=[["Ad Creative","Meta, Google and YouTube ads, UGC-style and AI creatives."],["Social Content","Reels, Shorts, posts and campaigns."],["E-commerce Content","Product photos and videos, A+ content, banners."],["YouTube Content","Editing, Shorts and thumbnails."],["Brand & Graphic Design","Social graphics, profiles, PDFs, logos."]];
+const WHY=["End-to-end creative production","Video + design under one workflow","AI-assisted production when useful","Experience with ads and social-first content","Single assets or complete content systems"];
+const STEPS=[["Understand","Brand, audience, offer and objective."],["Plan","Concept, hook, visual direction and deliverables."],["Create","Video, design, AI production, editing and iterations."],["Deliver","Platform-ready assets."],["Optimize","Learn from performance and feedback where applicable."]];
+const NEEDS=["Video Editing","Meta / Google Ad Creatives","Social Media Content","E-commerce Content","Product Video / Photography","YouTube Content","Graphic Design","AI Content","Other"];
+
+/* ---------- helpers ---------- */
+const $=id=>document.getElementById(id);
+const TONES="abcdef";
+function media(k,label,cls){
+  const m=MEDIA[k];
+  if(m) return /\.(mp4|webm)$/i.test(m)?`<video src="${m}" controls playsinline preload="metadata"></video>`:`<img src="${m}" alt="${label}" loading="lazy">`;
+  return `<div class="ph ${cls}">${label}<small>Media slot: ${k}</small></div>`;
+}
+function pcard(p,feat){
+  const inner=`<div class="pm">${media(p.s+"-hero",p.n,"h")}</div><div class="pb">${p.badge?`<span class="badge">${p.badge.toUpperCase()}</span><br>`:""}<div class="lab">${p.t}</div><h3>${p.n}</h3><p>${p.d}</p>${p.page===false?"":'<span class="link">View project →</span>'}</div>`;
+  const cls="pcard"+(feat?" feat":"");
+  return p.page===false?`<div class="${cls}" data-c="${p.c.join(" ")}">${inner}</div>`:`<a class="${cls}" href="#/work/${p.s}" data-c="${p.c.join(" ")}">${inner}</a>`;
+}
+function renderStatic(){
+  $("clientRow").innerHTML=["Pink Salt Wall","Skylite Networks","GatewayUrdu","Sphere Digital","Crown Rides","Talha Nas Vlogs"].map(x=>`<div class="client">${x}</div>`).join("");
+  $("homeWork").innerHTML=PROJECTS.slice(0,5).map((p,i)=>pcard(p,i==0)).join("");
+  $("workGrid").innerHTML=PROJECTS.map((p,i)=>pcard(p,i==0)).join("");
+  $("doGrid").innerHTML=DO.map(d=>`<div class="mini"><b>${d[0]}</b><p>${d[1]}</p></div>`).join("");
+  $("whyGrid").innerHTML=WHY.map(w=>`<div class="mini"><b>${w}</b></div>`).join("");
+  $("stepGrid").innerHTML=STEPS.map((s,i)=>`<div class="mini"><span class="n">0${i+1}</span><b>${s[0]}</b><p>${s[1]}</p></div>`).join("");
+  $("svcGrid").innerHTML=SERVICES.map((s,i)=>`<div class="card"><span class="num">0${i+1}</span><h3>${s[0]}</h3><ul>${s[1].map(x=>`<li>${x}</li>`).join("")}</ul><a class="link" href="#/work">See my work →</a></div>`).join("");
+  $("freeGrid").innerHTML=FREE.map((f,i)=>`<div class="fc"><div class="tile">${media("free-"+(i+1),f[0],"h")}</div><div class="lab">${f[0]}</div><p>${f[1]}</p></div>`).join("");
+  $("needSel").innerHTML=NEEDS.map(n=>`<option>${n}</option>`).join("");
+  $("filters").innerHTML=Object.entries(CATS).map(([k,v],i)=>`<button class="fbtn${i?"":" on"}" data-f="${k}">${v}</button>`).join("");
+  $("filters").onclick=e=>{const b=e.target.closest(".fbtn");if(!b)return;
+    document.querySelectorAll(".fbtn").forEach(x=>x.classList.toggle("on",x===b));
+    $("workGrid").querySelectorAll(".pcard").forEach(c=>c.style.display=(b.dataset.f=="all"||c.dataset.c.split(" ").includes(b.dataset.f))?"":"none");};
+}
+function renderProject(slug){
+  const p=PROJECTS.find(x=>x.s===slug&&x.page!==false); if(!p) return false;
+  const gal=p.gal.map((g,gi)=>`<div class="gal"><h3>${g}</h3><div class="gallery">${[1,2,3].map(n=>`<div class="tile">${media(`${p.s}-g${gi}-${n}`,g,TONES[(gi+n)%6])}</div>`).join("")}</div></div>`).join("");
+  $("projectBody").innerHTML=`<a class="link back" href="#/work">← All Work</a>
+   <div class="eyebrow">${p.badge||"Case study"} · ${p.c.map(c=>CATS[c]).join(" · ")}</div>
+   <h2 class="sec-title">${p.n}</h2><p class="lead">${p.t}</p>
+   <div class="tile" style="margin-top:36px">${media(p.s+"-hero",p.n,"h")}</div>
+   <div class="split" style="margin-bottom:0"><div><h3>Project <em>overview</em></h3><p style="margin-top:14px">${p.intro}</p>${p.link?`<a class="btn ghost" href="${p.link}" target="_blank" rel="noopener">Visit the channel →</a>`:""}</div>
+   <div><h3 style="font-size:24px">What I <em>handled</em></h3><ul class="checks">${p.items.map(i=>`<li><strong style="color:var(--text)">${i[0]}:</strong> ${i[1]}</li>`).join("")}</ul></div></div>
+   ${gal}
+   <div class="cta-box"><h3>Need something like <em>this?</em></h3><p>Let's talk about your brand.</p><a class="btn primary" href="#/contact">Start a Project →</a> <a class="btn ghost" href="#/work">More work</a></div>`;
+  return true;
+}
+
+/* ---------- router ---------- */
+const pages=document.querySelectorAll(".page"), links=document.querySelectorAll(".nav-links a"), drawer=$("navLinks");
+function route(){
+  const h=location.hash.replace(/^#\/?/,"")||"home";
+  let id=h.split("/")[0];
+  if(id==="work"&&h.split("/")[1]){ id=renderProject(h.split("/")[1])?"project":"work"; }
+  if(!$(id)) id="home";
+  pages.forEach(p=>p.classList.toggle("show",p.id===id));
+  links.forEach(a=>a.classList.toggle("active",a.dataset.r===(id==="project"?"work":id)));
+  drawer.classList.remove("open"); window.scrollTo({top:0});
+}
+renderStatic(); window.addEventListener("hashchange",route); route();
+$("menuBtn").onclick=e=>{e.stopPropagation();drawer.classList.toggle("open")};
+document.addEventListener("click",e=>{if(!drawer.contains(e.target))drawer.classList.remove("open")});
+
+/* ---------- contact form (opens visitor's email app) ---------- */
+$("contactForm").onsubmit=e=>{
+  e.preventDefault();const f=new FormData(e.target);
+  location.href="mailto:"+EMAIL+"?subject="+encodeURIComponent("Project enquiry: "+f.get("need"))+"&body="+encodeURIComponent(`Name: ${f.get("name")}\nEmail: ${f.get("email")}\nCompany: ${f.get("company")}\nNeed: ${f.get("need")}\nBudget: ${f.get("budget")}\n\n${f.get("details")}`);
+};
+</script>
+</body>
+</html>
