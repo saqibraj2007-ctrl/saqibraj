@@ -254,6 +254,8 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
 .rbrand .rgrid{grid-template-columns:repeat(4,1fr);align-items:start}
 .rbrand .tile{aspect-ratio:4/5}
 .rbrand .rslot.reel{aspect-ratio:4/5}
+.rgrid .tile video{width:100%;height:100%;object-fit:cover;display:block}
+.reel-tag{position:absolute;left:10px;top:10px;background:var(--grad);padding:3px 11px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
 .rai{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;margin-bottom:18px}
 .rai-flow.nosrc{grid-template-columns:1fr}.rai-flow.nosrc .rgrid{grid-template-columns:minmax(0,320px)!important}
 .rai-flow{display:grid;grid-template-columns:auto auto 1fr;gap:14px;align-items:center}
@@ -766,6 +768,19 @@ function rgrid(names,cls,ratio,extra){
   const key="r"+(++RK);REG[key]=names.map(n=>({type:"img",src:_p(n)+".webp"}));
   return `<div class="rgrid ${cls||""} ${extra||""}" data-key="${key}">${names.map((n,i)=>rt(n,key,i).replace('<figure class="tile"',`<figure class="tile" style="${ratio?"aspect-ratio:"+ratio:""}"`)).join("")}</div>`;
 }
+/* sub-brand reels: matched by brand name, so rich.js needs no change */
+const BRAND_REELS=[
+  [/nutri/i,"reel-nutrisalt.mp4"],
+  [/salt\s*-?room|builder/i,"reel-saltroombuilder.mp4"],
+  [/saltite/i,"reel-saltite.mp4"]
+];
+function reelTile(name){
+  const r=BRAND_REELS.find(x=>x[0].test(name||""));
+  if(!r)return `<div class="rslot reel"><div><b>Reel</b>coming soon</div></div>`;
+  const key="reel"+(++RK),src="media/"+r[1];
+  REG[key]=[{type:"video",src}];
+  return `<figure class="tile reel-tile" data-key="${key}" data-i="0"><video src="${src}#t=0.1" muted playsinline preload="metadata"></video><span class="play"></span><span class="reel-tag">Reel</span></figure>`;
+}
 function richHTML(slug){
   const k=Object.keys(RICH).find(x=>slug.includes(x));if(!k)return "";
   const R=RICH[k];let h="";
@@ -779,7 +794,7 @@ function richHTML(slug){
     if(S.brands){
       h+=S.brands.map(b=>`<div class="rbrand"><div class="rbrand-h"><h4>${b.name}</h4><a href="${b.url}" target="_blank" rel="noopener">${b.host} ↗</a></div>
         ${(()=>{const key="r"+(++RK);REG[key]=b.items.map(n=>({type:"img",src:_p(n)+".webp"}));
-          return `<div class="rgrid" data-key="${key}">${b.items.map((n,i)=>rt(n,key,i)).join("")}<div class="rslot reel"><div><b>Reel</b>coming soon</div></div></div>`})()}</div>`).join("");
+          return `<div class="rgrid" data-key="${key}">${b.items.map((n,i)=>rt(n,key,i)).join("")}${reelTile(b.name)}</div>`})()}</div>`).join("");
     }else if(S.ai){
       h+=S.ai.map(a=>`<div class="rai"><div class="rai-flow ${a.source.length?"":"nosrc"}">
         ${a.source.length?`<div class="rai-src"><small>Source PNG</small>${rgrid(a.source,"c1")}</div><div class="rai-arrow">→</div>`:``}
