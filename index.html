@@ -254,7 +254,13 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
 .rbrand .rgrid{grid-template-columns:repeat(4,1fr);align-items:start}
 .rbrand .tile{aspect-ratio:4/5}
 .rbrand .rslot.reel{aspect-ratio:4/5}
-.rgrid .tile video{width:100%;height:100%;object-fit:cover;display:block}
+.vtile{position:relative;overflow:hidden;background:#0e0820;margin:0}
+.vtile video{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vtile .vbg{object-fit:cover;filter:blur(22px) brightness(.55);transform:scale(1.3)}
+.vtile .vfg{object-fit:contain}
+.rbrand .rgrid .vtile{align-self:start}
+.vrow{display:grid;gap:12px;margin-top:12px}
+@media(max-width:700px){.rbrand .rgrid .vtile{grid-column:1/-1;max-width:260px;width:100%;justify-self:center}}
 .reel-tag{position:absolute;left:10px;top:10px;background:var(--grad);padding:3px 11px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
 .rai{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;margin-bottom:18px}
 .rai-flow.nosrc{grid-template-columns:1fr}.rai-flow.nosrc .rgrid{grid-template-columns:minmax(0,320px)!important}
@@ -757,6 +763,7 @@ function renderProject(slug){
     ${handled}
     ${p.link?`<div class="more" style="text-align:left;margin-top:40px"><a class="btn primary" href="${p.link.url}" target="_blank" rel="noopener">${p.link.text} →</a></div>`:""}
     <div class="sec"><div class="cta-box"><h2>Want something like <em class="g">this?</em></h2><p>Tell me about your brand and I'll help you plan the content.</p><a class="btn primary" href="#/contact">Start a Project →</a></div></div>`;
+  kickVideos();
   return true;
 }
 
@@ -774,20 +781,28 @@ const BRAND_REELS=[
   [/salt\s*-?room|builder/i,"reel-saltroombuilder.mp4"],
   [/saltite/i,"reel-saltite.mp4"]
 ];
+/* video tile: autoplays muted + loops as thumbnail; click opens lightbox from start with sound */
+function vtile(file,ratio,label){
+  const key="v"+(++RK),src="media/"+file;
+  REG[key]=[{type:"video",src}];
+  const a='muted loop autoplay playsinline preload="auto"';
+  return `<figure class="tile vtile" data-key="${key}" data-i="0" style="aspect-ratio:${ratio}"><video class="vbg" src="${src}" ${a} aria-hidden="true"></video><video class="vfg" src="${src}" ${a}></video><span class="play"></span>${label?`<span class="reel-tag">${label}</span>`:""}</figure>`;
+}
+function kickVideos(){document.querySelectorAll(".vtile video").forEach(v=>{v.muted=true;const p=v.play();if(p&&p.catch)p.catch(()=>{})})}
+const VIDS={main:"vid-psw-amazon.mp4",ugc:["vid-ugc-1.mp4","vid-ugc-2.mp4"],estore:"vid-cooking-plate.mp4"};
 function reelTile(name){
   const r=BRAND_REELS.find(x=>x[0].test(name||""));
   if(!r)return `<div class="rslot reel"><div><b>Reel</b>coming soon</div></div>`;
-  const key="reel"+(++RK),src="media/"+r[1];
-  REG[key]=[{type:"video",src}];
-  return `<figure class="tile reel-tile" data-key="${key}" data-i="0"><video src="${src}#t=0.1" muted playsinline preload="metadata"></video><span class="play"></span><span class="reel-tag">Reel</span></figure>`;
+  return vtile(r[1],"9/16","Reel");
 }
 function richHTML(slug){
   const k=Object.keys(RICH).find(x=>slug.includes(x));if(!k)return "";
-  const R=RICH[k];let h="";
+  const R=RICH[k];let h="",estoreDone=false;
   if(R.video){
     h+=`<div class="rsec"><h3 class="gal-title">Videos</h3><p class="rsub">Brand video, ads aur UGC</p>
-      <div class="rslot main"><div><b>${R.video.main.label}</b>${R.video.main.note||""}</div></div>
-      <div class="rvid">${R.video.extra.map(v=>`<div class="rslot wide"><div><b>${v.label}</b>coming soon</div></div>`).join("")}</div></div>`;
+      ${vtile(VIDS.main,"16/9","")}
+      <div class="rvid">${(()=>{let u=0;const out=R.video.extra.map(v=>(/ugc/i.test(v.label)&&u<VIDS.ugc.length)?vtile(VIDS.ugc[u++],"16/9","UGC Ad"):`<div class="rslot wide"><div><b>${v.label}</b>coming soon</div></div>`);
+        while(u<VIDS.ugc.length)out.push(vtile(VIDS.ugc[u++],"16/9","UGC Ad"));return out.join("")})()}</div></div>`;
   }
   R.sections.forEach(S=>{
     h+=`<div class="rsec"><h3 class="gal-title">${S.title}</h3><p class="rsub">${S.sub||""}</p>`;
@@ -805,8 +820,10 @@ function richHTML(slug){
       h+=rgrid(S.items,"c"+c,S.ratio,"").replace('class="rgrid ',`style="grid-template-columns:repeat(${c},1fr)" class="rgrid `);
       if(S.bts)h+=`<div class="rbts"><p class="rsub" style="margin-bottom:10px">Behind the scenes</p>${rgrid(S.bts,"c3")}</div>`;
     }
+    if(!estoreDone&&/store/i.test(S.title)){estoreDone=true;h+=`<div class="vrow" style="grid-template-columns:minmax(0,640px)">${vtile(VIDS.estore,"16/9","Product Video")}</div>`}
     h+="</div>";
   });
+  if(!estoreDone)h+=`<div class="rsec"><h3 class="gal-title">eStore Product Video</h3><div class="vrow rgrid" style="grid-template-columns:minmax(0,640px)">${vtile(VIDS.estore,"16/9","Product Video")}</div></div>`;
   return h;
 }
 
