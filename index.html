@@ -350,6 +350,22 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
  .cc-reel .rslot{aspect-ratio:9/16;height:auto;width:100%;max-width:240px;justify-self:center}
 }
 @media(max-width:560px){.cl-talha{grid-template-columns:1fr}}
+
+/* ---------- brands marquee ---------- */
+.marquee{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.mq-track{display:flex;width:max-content;animation:mq 42s linear infinite;will-change:transform}
+.marquee:hover .mq-track{animation-play-state:paused}
+@keyframes mq{to{transform:translateX(-50%)}}
+.mq-item{flex:none;height:78px;min-width:150px;margin-right:18px;padding:0 26px;border-radius:16px;background:#f5f2fc;display:grid;place-items:center}
+.mq-item.dark{background:#120c24;border:1px solid var(--line)}
+.mq-item img{height:auto;width:auto;max-height:46px;max-width:170px;object-fit:contain}
+@media(max-width:700px){.mq-item{height:64px;min-width:120px;padding:0 20px;margin-right:12px}.mq-item img{max-height:36px;max-width:130px}.mq-track{animation-duration:30s}}
+@media(prefers-reduced-motion:reduce){.mq-track{animation:none}.marquee{overflow-x:auto}}
+/* ---------- featured reels row ---------- */
+.reel-row{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;-webkit-overflow-scrolling:touch}
+.reel-row .vtile{flex:0 0 210px;width:210px;border-radius:16px;scroll-snap-align:start;cursor:pointer}
+@media(max-width:700px){.reel-row .vtile{flex-basis:170px;width:170px}}
+.rgrid.n3{grid-template-columns:repeat(3,minmax(0,1fr))}
 </style>
 </head>
 <body>
@@ -399,12 +415,16 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
       </div>
     </div>
 
-    <!-- 2. Client strip -->
+    <!-- 2. Brands marquee -->
     <div class="strip">
-      <small>SELECTED BRANDS &amp; CLIENTS</small>
-      <div class="strip-row">
-        <span>Pink Salt Wall</span><span>Skylite Networks</span><span>GatewayUrdu</span><span>Sphere Digital</span><span>Crown Rides</span><span>Talha Nas Vlogs</span>
-      </div>
+      <small>BRANDS I'VE WORKED WITH</small>
+      <div class="marquee" aria-label="Brands I have worked with"><div class="mq-track"><div class="mq-item"><img src="media/logos/psw.webp" alt="Pink Salt Wall" loading="lazy" decoding="async"></div><div class="mq-item"><img src="media/logos/saltroom.webp" alt="Salt Room Builder" loading="lazy" decoding="async"></div><div class="mq-item"><img src="media/logos/nutrisalt.webp" alt="NutriSalt" loading="lazy" decoding="async"></div><div class="mq-item"><img src="media/logos/saltite.webp" alt="Saltite" loading="lazy" decoding="async"></div><div class="mq-item"><img src="media/logos/skylite.webp" alt="Skylite Networks" loading="lazy" decoding="async"></div><div class="mq-item"><img src="media/logos/gateway.webp" alt="GatewayUrdu" loading="lazy" decoding="async"></div><div class="mq-item"><img src="media/logos/sphere.webp" alt="Sphere Digital" loading="lazy" decoding="async"></div><div class="mq-item dark"><img src="media/logos/crown.webp" alt="Crown Rides" loading="lazy" decoding="async"></div><div class="mq-item dark"><img src="media/logos/bextunio.webp" alt="Bextunio" loading="lazy" decoding="async"></div><div class="mq-item dark"><img src="media/logos/cade.webp" alt="Cade Cosmetics" loading="lazy" decoding="async"></div><div class="mq-item"><img aria-hidden="true" src="media/logos/psw.webp" alt="Pink Salt Wall" loading="lazy" decoding="async"></div><div class="mq-item"><img aria-hidden="true" src="media/logos/saltroom.webp" alt="Salt Room Builder" loading="lazy" decoding="async"></div><div class="mq-item"><img aria-hidden="true" src="media/logos/nutrisalt.webp" alt="NutriSalt" loading="lazy" decoding="async"></div><div class="mq-item"><img aria-hidden="true" src="media/logos/saltite.webp" alt="Saltite" loading="lazy" decoding="async"></div><div class="mq-item"><img aria-hidden="true" src="media/logos/skylite.webp" alt="Skylite Networks" loading="lazy" decoding="async"></div><div class="mq-item"><img aria-hidden="true" src="media/logos/gateway.webp" alt="GatewayUrdu" loading="lazy" decoding="async"></div><div class="mq-item"><img aria-hidden="true" src="media/logos/sphere.webp" alt="Sphere Digital" loading="lazy" decoding="async"></div><div class="mq-item dark"><img aria-hidden="true" src="media/logos/crown.webp" alt="Crown Rides" loading="lazy" decoding="async"></div><div class="mq-item dark"><img aria-hidden="true" src="media/logos/bextunio.webp" alt="Bextunio" loading="lazy" decoding="async"></div><div class="mq-item dark"><img aria-hidden="true" src="media/logos/cade.webp" alt="Cade Cosmetics" loading="lazy" decoding="async"></div></div></div>
+    </div>
+
+    <!-- 2b. Featured reels (filled by JS) -->
+    <div class="sec" id="reelsSec" style="display:none">
+      <div class="sec-head"><div class="eyebrow">Latest edits</div><h2 class="sec-title">Featured <em class="g">Reels</em></h2></div>
+      <div class="reel-row" id="reelRow"></div>
     </div>
 
     <!-- 3. Selected work -->
@@ -551,7 +571,7 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
     <div class="about-grid">
       <div class="avatar"><img src="profile.jpg" alt="Saqib Mahmood"></div>
       <div>
-        <p>I'm based in Rabwah, Punjab, Pakistan, and I've spent more than 3 years making content for brands: promotional videos, social campaigns, ad creatives and e-commerce visuals.</p>
+        <p>I'm based in Lahore, Punjab, Pakistan, and I've spent more than 3 years making content for brands: promotional videos, social campaigns, ad creatives and e-commerce visuals.</p>
         <p>What I enjoy most is the full picture. A brand rarely needs just one edit or one graphic. It needs a content system where the ads, the reels, the product visuals and the design all look and feel like one brand. I mix creativity, content strategy and modern AI tools to get there faster, without losing the human touch.</p>
         <p>I also teach video editing and ad creative to beginners at Skylite Institute, and I run my own YouTube channel.</p>
         <div class="chips" style="margin-top:6px">
@@ -564,12 +584,13 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
     <div class="sec">
       <div class="sec-head"><h2 class="sec-title">Selected <em class="g">experience</em></h2></div>
       <div class="timeline">
+        <div class="job"><h3>AI Content Creator &amp; Video Editor</h3><div class="meta">Bextunio · Oct 2026 – Present</div><p>Reels, social ad creatives and long-form YouTube videos, plus AI-generated visuals for product marketing.</p></div>
         <div class="job"><h3>Creative Production Manager</h3><div class="meta">Website Planners · Sep 2026 – Present</div><p>Video production, graphic design, social content and digital marketing assets.</p></div>
         <div class="job"><h3>Digital Content Creator &amp; Video Editor</h3><div class="meta">Crown Rides · Jan 2026 – Mar 2026</div><p>Promo videos, reels, website visuals and ad creatives.</p></div>
         <div class="job"><h3>Creative Social Media Video Editor &amp; Graphic Designer</h3><div class="meta">GatewayUrdu · Dec 2025 – Jul 2026</div><p>Reels, Shorts and UGC edits with AI-enhanced animation, plus seasonal post graphics.</p></div>
-        <div class="job"><h3>Video Editor &amp; Content Strategist</h3><div class="meta">Skylite Networks · Mar 2025 – Present</div><p>Ad creatives, social content and e-commerce visuals for a multi-brand Himalayan salt company.</p></div>
+        <div class="job"><h3>Video Editor &amp; Content Strategist</h3><div class="meta">Skylite Corporation · Mar 2025 – Present</div><p>Ad creatives, social content and e-commerce visuals for a multi-brand Himalayan salt company.</p></div>
         <div class="job"><h3>Thumbnail Designer &amp; Content Strategist</h3><div class="meta">Talha Nas Vlogs · Feb 2025 – Apr 2025</div><p>Mobile-first thumbnails and content ideas for a vlog channel.</p></div>
-        <div class="job" style="padding-bottom:0"><h3>BS Computer Science</h3><div class="meta">Virtual University of Pakistan</div></div>
+        <div class="job" style="padding-bottom:0"><h3>BS Computer Science</h3><div class="meta">Virtual University of Pakistan · Sep 2025</div></div>
       </div>
     </div>
 
@@ -580,7 +601,6 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
           <p>SaqibRaj Tech is my own channel, where I teach mobile thumbnail design and video editing in Urdu and Hindi.</p>
         </div>
         <div class="cta" style="margin:0">
-          <a class="btn ghost" href="#/work/youtube">See creator work</a>
           <a class="btn primary" href="https://www.youtube.com/@saqibrajtech" target="_blank" rel="noopener">Visit channel</a>
         </div>
       </div>
@@ -610,7 +630,7 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
           <a id="liLink" target="_blank" rel="noopener" href="#">LinkedIn</a>
           <a id="ytLink" target="_blank" rel="noopener" href="#">YouTube</a>
         </div>
-        <p style="margin-top:22px;font-size:14px">Rabwah, Punjab, Pakistan</p>
+        <p style="margin-top:22px;font-size:14px">Lahore, Punjab, Pakistan</p>
       </div>
       <form id="contactForm">
         <div class="row2">
@@ -1002,6 +1022,90 @@ applyFilter=function(){
   _af();
   const b=document.querySelector(".th-block");
   if(b)b.style.display=(CUR_FILTER==="all"||CUR_FILTER==="video")?"":"none";
+};
+
+
+/* =====================================================================
+   FINAL POLISH: show only what exists, no empty containers, real covers
+   ===================================================================== */
+/* a) real cover images from the content that is already uploaded */
+(function(){
+  const cov=(re,file)=>{const p=PROJECTS.find(x=>re.test(x.slug));if(p&&!MEDIA.covers[p.slug])MEDIA.covers[p.slug]=file};
+  try{const k=Object.keys(RICH).find(x=>/pink|psw/i.test(x));
+    if(k){const sec=(RICH[k].sections||[]).find(S=>S.items&&S.items.length);
+      if(sec)cov(/pink|psw/i,_p(sec.items[0])+".webp");}}catch(e){}
+  cov(/sphere/i,"gfx-sphere-1.webp");cov(/gateway/i,"gfx-gateway-1.webp");
+  cov(/crown/i,"gfx-crown-banner.webp");cov(/talha/i,"gfx-talha-1.webp");
+})();
+/* b) drop projects that have no uploaded content yet (add them back later) */
+(function(){
+  const has=p=>CLIENTS.some(c=>c[0].test(p.slug))||Object.keys(RICH).some(k=>p.slug.includes(k))||keepGalleries(p.slug).length>0;
+  for(let i=PROJECTS.length-1;i>=0;i--)if(!has(PROJECTS[i]))PROJECTS.splice(i,1);
+})();
+/* c) hero montage: use real covers when no hero media was set */
+(function(){
+  if(list(MEDIA.hero).length)return;
+  const c=PROJECTS.map(p=>MEDIA.covers[p.slug]).filter(Boolean).slice(0,3);
+  if(c.length)MEDIA.hero=c;
+})();
+/* d) never render empty gallery boxes */
+const _gh=galleryHTML;
+galleryHTML=function(key,label){return list((MEDIA.galleries||{})[key]).length?_gh(key,label):""};
+
+/* e) remove every empty container / "coming soon" slot from a rendered area */
+function pruneEmpty(root){
+  if(!root)return;
+  root.querySelectorAll(".rslot,.ph-tile,.empty,.empty-note,.addcover").forEach(n=>n.remove());
+  // a video that fails to load (file not uploaded) is removed together with its tile
+  root.querySelectorAll(".vtile video").forEach(v=>{if(v.__pe)return;v.__pe=1;
+    v.addEventListener("error",()=>{const t=v.closest(".vtile");if(t){t.remove();pruneEmpty(document.getElementById("projectBody"))}},{once:true})});
+  // broken images: hide the tile
+  root.querySelectorAll(".tile img,.pcard>img").forEach(im=>{if(im.__pe)return;im.__pe=1;
+    const need=im.hasAttribute("onerror")?2:1;let n=0; /* 2 = thumbnail failed, then full image failed too */
+    im.addEventListener("error",()=>{if(++n<need)return;const t=im.closest(".tile");(t||im).remove()})});
+  root.querySelectorAll(".rvid,.vrow").forEach(n=>{if(!n.children.length)n.remove()});
+  root.querySelectorAll(".rbrand .rgrid").forEach(g=>{g.classList.toggle("n3",g.children.length===3)});
+  root.querySelectorAll(".rsec,.gal-block,.rbrand,.aiset").forEach(n=>{
+    if(!n.querySelector(".tile,.vtile,img,video,.aiset,.rbrand,.clrow,.clbox,.groups,.handled,.overview"))n.remove()});
+}
+const _rp2=renderProject;
+renderProject=function(slug){
+  const ok=_rp2(slug);
+  if(ok){const b=$("#projectBody");
+    b.querySelectorAll(".phero-cover:not(:has(img,video))").forEach(n=>n.remove());
+    pruneEmpty(b);
+    b.querySelectorAll("img:not([loading])").forEach(i=>i.loading="lazy")}
+  return ok;
+};
+
+/* f) work page: no empty freelance cards, "Freelance Projects" shortcut card removed */
+const _rw2=renderWork;
+renderWork=function(){
+  _rw2();
+  document.querySelectorAll("#freelanceGrid .fcard").forEach(c=>{if(!(REG["fl-"+c.dataset.fl]||[]).length)c.remove()});
+  document.querySelectorAll("#workCards .pcard").forEach(c=>{if(/goFreelance/.test(c.getAttribute("onclick")||""))c.remove()});
+  const g=$("#freelanceGrid");if(g&&!g.children.length){g.remove();const h=document.querySelector("#freelance>.sec-head");if(h)h.remove()}
+  document.querySelectorAll(".pcard>img").forEach(i=>{i.loading="lazy";i.decoding="async";i.addEventListener("error",()=>i.remove(),{once:true})});
+  document.querySelectorAll(".pcard .addcover").forEach(n=>n.remove());
+  applyFilter();
+};
+const _af2=applyFilter;
+applyFilter=function(){
+  _af2();
+  const b=document.querySelector(".th-block"),f=$("#freelance");
+  if(f)f.style.display=(b&&b.style.display!=="none")||document.querySelector("#freelanceGrid .fcard")?"":"none";
+};
+
+/* g) home: featured reels row built from the uploaded reels */
+const _rh=renderHome;
+renderHome=function(){
+  _rh();
+  document.querySelectorAll(".mt.ph").forEach(n=>n.remove());
+  const reels=[["reel-gateway.mp4","GatewayUrdu"],["reel-crown.mp4","Crown Rides"],["reel-sphere-1.mp4","Sphere Digital"],["reel-sphere-2.mp4","Sphere Digital"]];
+  const row=$("#reelRow");
+  if(row){row.innerHTML=reels.map(r=>vtile(r[0],"9/16",r[1])).join("");$("#reelsSec").style.display="";pruneEmpty(row);kickVideos()}
+  document.querySelectorAll(".pcard>img").forEach(i=>{i.loading="lazy";i.decoding="async";i.addEventListener("error",()=>i.remove(),{once:true})});
+  document.querySelectorAll(".pcard .addcover").forEach(n=>n.remove());
 };
 
 renderHome();renderWork();route();
