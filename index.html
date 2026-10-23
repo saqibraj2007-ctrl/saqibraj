@@ -321,6 +321,35 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
   .phero-cover{aspect-ratio:16/10}
   .brand small{display:none}
 }
+
+/* ---------- additions: AI photography rows, client graphic layouts ---------- */
+.aiset{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;margin-bottom:18px}
+.aiset-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
+.aiset-h h4{font-family:Syne;font-size:20px}
+.aiset-h small{color:var(--muted);font-size:12px;letter-spacing:.08em}
+.airow{--h:clamp(170px,24vw,250px);display:flex;gap:12px;overflow-x:auto;padding-bottom:12px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--p1) transparent}
+.airow::-webkit-scrollbar{height:6px}.airow::-webkit-scrollbar-thumb{background:var(--p1);border-radius:9px}
+.airow .tile{flex:none;height:var(--h);margin:0;border-radius:14px;scroll-snap-align:start}
+.airow .tile img{width:100%;height:100%;object-fit:cover}
+.airow .tile.src{background:#fff;border-color:rgba(255,255,255,.55)}
+.airow .tile.src img{object-fit:contain}
+.clrow{display:grid;gap:12px;align-items:start}
+.clrow .tile,.clbox .tile{margin:0;border-radius:14px}
+.clrow .tile img,.clbox .tile img{width:100%;height:100%;object-fit:cover}
+.cl-sphere{grid-template-columns:repeat(2,minmax(0,1fr)) repeat(2,minmax(0,.703fr))}
+.cl-gateway{grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,.703fr)}
+.cl-talha{grid-template-columns:repeat(3,minmax(0,1fr))}
+.clbox{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.4fr);gap:12px}
+.cc-left{display:grid;gap:12px;align-content:start}
+.cc-posts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.cc-reel{display:grid}
+.cc-reel .rslot{aspect-ratio:auto;height:100%}
+@media(max-width:700px){
+ .cl-sphere,.cl-gateway{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .clbox{grid-template-columns:1fr}
+ .cc-reel .rslot{aspect-ratio:9/16;height:auto;width:100%;max-width:240px;justify-self:center}
+}
+@media(max-width:560px){.cl-talha{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -851,6 +880,68 @@ function route(){
 $("#menuBtn").onclick=e=>{e.stopPropagation();menu.classList.toggle("open")};
 document.addEventListener("click",e=>{if(!menu.contains(e.target))menu.classList.remove("open")});
 window.addEventListener("hashchange",route);
+
+/* ============ ADDITIONS: AI photography rows, client graphics, product video to top ============ */
+const _m=n=>"media/"+n;
+function mreg(names){const k="m"+(++RK);REG[k]=names.map(n=>({type:"img",src:_m(n)+".webp"}));return k}
+const mimg=(n,i,ratio)=>`<figure class="tile" data-i="${i}" style="aspect-ratio:${ratio}"><img loading="lazy" decoding="async" src="${_m(n)}-t.webp" alt="${n.replace(/-/g," ")}"></figure>`;
+const reelSlot=()=>`<div class="rslot reel"><div><b>Reel</b>coming soon</div></div>`;
+const csec=(title,sub,body)=>`<div class="rsec"><h3 class="gal-title">${title}</h3><p class="rsub">${sub}</p>${body}</div>`;
+
+/* ---- AI product photography: one row per product = white-bg PNG first, then its AI images ---- */
+const AI_SETS=[
+  {name:"Salt Bricks",src:["ai-bricks-src",1.46],res:[1,2,3,4,5,6,7,8].map(i=>["ai-bricks-"+i,1])},
+  {name:"Salt Plate",src:["ai-plate-src",1],res:[1,2,3,4].map(i=>["ai-plate-"+i,1.79])},
+  {name:"Round Salt Plate",src:["ai-round-src",1.79],res:[["ai-round-1",1.79],["ai-round-2",1],["ai-round-3",1.79],["ai-round-4",1.79]]},
+  {name:"Saltite",src:["ai-saltite-src",.75],res:[1,2,3,4].map(i=>["ai-saltite-"+i,1])}
+];
+function aiSetHTML(s){
+  const key=mreg([s.src[0],...s.res.map(r=>r[0])]);
+  const t=(n,i,r,cls,tag)=>`<figure class="tile ${cls}" data-i="${i}" style="aspect-ratio:${r};width:calc(var(--h) * ${r})"><img loading="lazy" decoding="async" src="${_m(n)}-t.webp" alt="${s.name} ${cls==="src"?"source PNG":"AI image"}">${tag?`<span class="reel-tag">${tag}</span>`:""}</figure>`;
+  return `<div class="aiset"><div class="aiset-h"><h4>${s.name}</h4><small>${s.res.length+1} IMAGES · SCROLL →</small></div>
+    <div class="airow" data-key="${key}">${t(s.src[0],0,s.src[1],"src","Source PNG")}${s.res.map((r,i)=>t(r[0],i+1,r[1],"","")).join("")}</div></div>`;
+}
+const aiHTML=()=>csec("AI Product <em class=\"g\">Photography</em>","Plain white-background product PNG first, then the AI-generated scenes made from it.",AI_SETS.map(aiSetHTML).join(""));
+
+/* ---- client graphic layouts (reel slots left empty on purpose) ---- */
+function sphereHTML(){const n=["gfx-sphere-1","gfx-sphere-2"],k=mreg(n);
+  return csec("Graphic <em class=\"g\">Work</em>","Social media posts",`<div class="clrow cl-sphere" data-key="${k}">${n.map((x,i)=>mimg(x,i,"4/5")).join("")}${reelSlot()}${reelSlot()}</div>`)}
+function gatewayHTML(){const n=["gfx-gateway-1","gfx-gateway-2","gfx-gateway-3"],k=mreg(n);
+  return csec("Graphic <em class=\"g\">Work</em>","Social media posts",`<div class="clrow cl-gateway" data-key="${k}">${n.map((x,i)=>mimg(x,i,"4/5")).join("")}${reelSlot()}</div>`)}
+function crownHTML(){const n=["gfx-crown-1","gfx-crown-2","gfx-crown-3","gfx-crown-banner"],k=mreg(n);
+  return csec("Graphic <em class=\"g\">Work</em>","Posts and website banner",`<div class="clbox" data-key="${k}"><div class="cc-left"><div class="cc-posts">${n.slice(0,3).map((x,i)=>mimg(x,i,"1/1")).join("")}</div>${mimg(n[3],3,"851/315")}</div><div class="cc-reel">${reelSlot()}</div></div>`)}
+function talhaHTML(){const n=["gfx-talha-1","gfx-talha-2","gfx-talha-3"],k=mreg(n);
+  return csec("Thumbnail <em class=\"g\">Design</em>","Mobile-first YouTube thumbnails",`<div class="clrow cl-talha" data-key="${k}">${n.map((x,i)=>mimg(x,i,"16/9")).join("")}</div>`)}
+/* slug matching: change the regex here if a project slug is different */
+const CLIENTS=[[/sphere/i,sphereHTML],[/gateway/i,gatewayHTML],[/crown/i,crownHTML],[/talha/i,talhaHTML]];
+const PINK_RE=/pink|psw/i;
+function keepGalleries(slug){const p=PROJECTS.find(x=>x.slug===slug);if(!p||!p.galleries)return "";
+  return p.galleries.filter(g=>list((MEDIA.galleries||{})[g.key]).length).map(g=>galleryHTML(g.key,g.label)).join("")}
+const _rich=richHTML;
+richHTML=function(slug){
+  const c=CLIENTS.find(x=>x[0].test(slug));
+  if(c)return c[1]()+(_rich(slug)||keepGalleries(slug));
+  const base=_rich(slug);
+  if(PINK_RE.test(slug))return base?base+aiHTML():aiHTML()+keepGalleries(slug);
+  return base;
+};
+
+/* ---- Pink Salt Wall: move the product video from the bottom to the top ---- */
+function productVideoToTop(){
+  const root=$("#projectBody");
+  const v=[...root.querySelectorAll(".vtile")].find(t=>/vid-cooking-plate\.mp4/.test((t.querySelector("video.vfg")||t.querySelector("video")).getAttribute("src")||""));
+  if(!v)return;
+  const holder=v.closest(".vrow")||v,oldSec=holder.closest(".rsec"),first=root.querySelector(".rsec");
+  if(!first)return;
+  const ns=document.createElement("div");ns.className="rsec";
+  ns.innerHTML='<h3 class="gal-title">Product <em class="g">Video</em></h3><p class="rsub">eStore product video</p>';
+  ns.appendChild(holder);first.parentNode.insertBefore(ns,first);
+  if(oldSec&&oldSec!==ns&&!oldSec.querySelector(".tile,.vtile,.rgrid,.rbrand,.rai"))oldSec.remove();
+  kickVideos();
+}
+const _rp=renderProject;
+renderProject=function(slug){const ok=_rp(slug);if(ok&&PINK_RE.test(slug))productVideoToTop();return ok};
+
 renderHome();renderWork();route();
 </script>
 </body>
