@@ -350,6 +350,34 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
  .cc-reel .rslot{aspect-ratio:9/16;height:auto;width:100%;max-width:240px;justify-self:center}
 }
 @media(max-width:560px){.cl-talha{grid-template-columns:1fr}}
+
+/* ---------- work page containers ---------- */
+#workCards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.wk{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:26px;overflow:hidden;transition:.3s}
+.wk:hover{transform:translateY(-5px);border-color:var(--p1);box-shadow:0 22px 55px rgba(124,58,237,.3)}
+.wk.main{grid-column:1/-1}
+.wk-media{padding:14px 14px 0;display:grid;gap:8px}
+.wk-grid{display:grid;gap:8px;align-items:start}
+.wk-i{display:block;position:relative;overflow:hidden;border-radius:12px;background:#0e0820;border:1px solid var(--line)}
+.wk-i img{width:100%;height:100%;object-fit:cover;object-position:50% 15%;transition:.5s}
+.wk:hover .wk-i img{transform:scale(1.04)}
+.wk-i.span{grid-column:1/-1}
+.wk-i.fill{position:relative;aspect-ratio:auto}
+.wk-top{display:grid;grid-template-columns:1.7fr 1fr;gap:8px}
+.wk-vid{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#0e0820;border:1px solid var(--line)}
+.wk-vid video{width:100%;height:100%;object-fit:cover;display:block}
+.wk-side{display:grid;grid-template-rows:1fr 1fr;gap:8px;min-height:0}
+.wk-side .wk-i{min-height:0}.wk-side .wk-i img{position:absolute;inset:0}
+.wk-ph{aspect-ratio:16/9;border-radius:12px;display:grid;place-items:center;background:linear-gradient(160deg,#4c1d95,#c026d3);font:800 54px Syne;color:rgba(255,255,255,.85)}
+.wk-info{padding:18px 24px 24px;display:flex;flex-direction:column;gap:6px;flex:1}
+.wk .tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--p2);font-weight:600}
+.wk h3{font-size:clamp(22px,3vw,30px)}
+.wk-pts{list-style:none;color:var(--muted);font-size:14.5px;display:grid;gap:4px;margin:2px 0 6px}
+.wk-pts li{padding-left:18px;position:relative}
+.wk-pts li:before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--grad)}
+.wk-go{margin-top:auto;color:var(--p2);font-weight:600;font-size:14px}
+.wk:hover .wk-go{color:#fff}
+@media(max-width:800px){#workCards{grid-template-columns:1fr}.wk-top{grid-template-columns:1fr}.wk-side{grid-template-rows:none;grid-template-columns:1fr 1fr}.wk-side .wk-i{aspect-ratio:4/3}}
 </style>
 </head>
 <body>
@@ -716,8 +744,10 @@ document.addEventListener("click",e=>{
 });
 
 /* ============ cards ============ */
+const AUTO_COVER=[[/pink|psw/i,"ai-plate-1"],[/sphere/i,"gfx-sphere-1"],[/gateway/i,"gfx-gateway-1"],[/crown/i,"gfx-crown-banner"],[/talha/i,"gfx-talha-1"]];
+function autoCover(slug){const a=AUTO_COVER.find(x=>x[0].test(slug));return a?"media/"+a[1]+".webp":""}
 function cardHTML(p,idx,big){
-  const cov=norm(MEDIA.covers[p.slug]||"");
+  const cov=norm(MEDIA.covers[p.slug]||autoCover(p.slug)||"");
   const g=GRADS[idx%GRADS.length];
   return `<a class="pcard ${big?"big":""} ${p.personal?"personal":""}" href="#/work/${p.slug}" data-tags="${p.tags.join(" ")}" style="--g:${g}">
     ${cov?`<img src="${cov.type==="img"?cov.src:cov.src}" alt="">`:`<span class="addcover">Cover image</span>`}
@@ -742,7 +772,7 @@ const FILTERS=[["all","All"],["advertising","Advertising"],["video","Video"],["s
 let CUR_FILTER="all";
 function renderWork(){
   $("#filters").innerHTML=FILTERS.map(f=>`<button data-f="${f[0]}" class="${f[0]===CUR_FILTER?"on":""}">${f[1]}</button>`).join("");
-  const all=PROJECTS.map((p,i)=>cardHTML(p,i,i===0)).join("");
+  const all=wkList();
   const other=`<a class="pcard" href="#" onclick="goFreelance();return false" data-tags="advertising video social ecommerce youtube design ai" style="--g:${GRADS[PROJECTS.length%GRADS.length]}"><div class="info"><span class="tag">Other work</span><h3>Freelance Projects</h3><p>Smaller jobs grouped by service type: talking head, UGC, reels, thumbnails and more.</p></div><span class="arrow">↓</span></a>`;
   $("#workCards").innerHTML=all+other;
   $("#freelanceGrid").innerHTML=FREELANCE.map(f=>{
@@ -752,11 +782,12 @@ function renderWork(){
       <div class="fbody"><span class="chip">${f.label}</span><p>${f.line}</p>${items.length?`<span class="count">View ${items.length} ${items.length>1?"items":"item"} →</span>`:""}</div></article>`;
   }).join("");
   applyFilter();
+  document.querySelectorAll("#workCards video").forEach(v=>{v.muted=true;const q=v.play();if(q&&q.catch)q.catch(()=>{})});
 }
 function applyFilter(){
   document.querySelectorAll("#filters button").forEach(b=>b.classList.toggle("on",b.dataset.f===CUR_FILTER));
   let shown=0;
-  document.querySelectorAll("#workCards .pcard, #freelanceGrid .fcard").forEach(c=>{
+  document.querySelectorAll("#workCards .pcard, #workCards .wk, #freelanceGrid .fcard").forEach(c=>{
     const ok=CUR_FILTER==="all"||c.dataset.tags.split(" ").includes(CUR_FILTER);
     c.style.display=ok?"":"none";
     if(ok&&c.classList.contains("fcard"))shown++;
@@ -774,7 +805,7 @@ function goFreelance(){CUR_FILTER="all";applyFilter();$("#freelance").scrollInto
 function renderProject(slug){
   const p=PROJECTS.find(x=>x.slug===slug);
   if(!p){location.hash="#/work";return false}
-  const idx=PROJECTS.indexOf(p),cov=norm(MEDIA.covers[p.slug]||"");
+  const idx=PROJECTS.indexOf(p),cov=norm(MEDIA.covers[p.slug]||autoCover(p.slug)||"");
   const groups=p.groups?`<div class="groups">${p.groups.map(g=>`<div class="group"><h3>${g.title}</h3><p>${g.text}</p></div>`).join("")}</div>`:"";
   const handled=p.handled?`<div class="gal-block"><h3 class="gal-title">What I handled</h3><ul class="handled">${p.handled.map(h=>`<li>${h}</li>`).join("")}</ul></div>`:"";
   $("#projectBody").innerHTML=`
@@ -824,16 +855,28 @@ function reelTile(name){
   if(!r)return `<div class="rslot reel"><div><b>Reel</b>coming soon</div></div>`;
   return vtile(r[1],"9/16","Reel");
 }
+/* drops: old "AI frame" block, Banners & Listing Graphics. Product-photography block keeps only its behind-the-scenes shots */
+function prunedSections(R){
+  const out=[];
+  (R.sections||[]).forEach(S=>{
+    if(S.ai)return;
+    if(/banner|listing/i.test(S.title||""))return;
+    if(S.bts){out.push({title:"Behind the <em class=\"g\">Scenes</em>",sub:"Product photoshoots happen in-house",bts:S.bts,btsOnly:true});return}
+    if(/photograph/i.test(S.title||""))return;
+    out.push(S);
+  });
+  return out;
+}
 function richHTML(slug){
   const k=Object.keys(RICH).find(x=>slug.includes(x));if(!k)return "";
-  const R=RICH[k];let h="",estoreDone=false;
+  const R=RICH[k];let h="",storeIn=0;
   if(R.video){
     h+=`<div class="rsec"><h3 class="gal-title">Videos</h3><p class="rsub">Brand video, ads aur UGC</p>
       ${vtile(VIDS.main,"16/9","")}
-      <div class="rvid">${(()=>{let u=0;const out=R.video.extra.map(v=>(/ugc/i.test(v.label)&&u<VIDS.ugc.length)?vtile(VIDS.ugc[u++],"16/9","UGC Ad"):`<div class="rslot wide"><div><b>${v.label}</b>coming soon</div></div>`);
-        while(u<VIDS.ugc.length)out.push(vtile(VIDS.ugc[u++],"16/9","UGC Ad"));return out.join("")})()}</div></div>`;
+      <div class="rvid">${(()=>{let u=0;const out=R.video.extra.map(v=>(/ugc/i.test(v.label)&&u<VIDS.ugc.length)?vtile(VIDS.ugc[u++],"16/9","UGC Ad"):(!storeIn&&/store|product/i.test(v.label)&&(storeIn=1))?vtile(VIDS.estore,"16/9","Product Video"):`<div class="rslot wide"><div><b>${v.label}</b>coming soon</div></div>`);
+        while(u<VIDS.ugc.length)out.push(vtile(VIDS.ugc[u++],"16/9","UGC Ad"));if(!storeIn)out.push(vtile(VIDS.estore,"16/9","Product Video"));return out.join("")})()}</div></div>`;
   }
-  R.sections.forEach(S=>{
+  prunedSections(R).forEach(S=>{
     h+=`<div class="rsec"><h3 class="gal-title">${S.title}</h3><p class="rsub">${S.sub||""}</p>`;
     if(S.brands){
       h+=S.brands.map(b=>`<div class="rbrand"><div class="rbrand-h"><h4>${b.name}</h4><a href="${b.url}" target="_blank" rel="noopener">${b.host} ↗</a></div>
@@ -846,13 +889,12 @@ function richHTML(slug){
         <p class="rai-cap">${a.source.length?"<b>PNG → AI.</b> ":""}${a.caption}</p></div>`).join("");
     }else{
       const c=S.cols||3;
-      h+=rgrid(S.items,"c"+c,S.ratio,"").replace('class="rgrid ',`style="grid-template-columns:repeat(${c},1fr)" class="rgrid `);
-      if(S.bts)h+=`<div class="rbts"><p class="rsub" style="margin-bottom:10px">Behind the scenes</p>${rgrid(S.bts,"c3")}</div>`;
+      if(S.btsOnly)h+=rgrid(S.bts,"c3","4/3");
+      else h+=rgrid(S.items,"c"+c,S.ratio,"").replace('class="rgrid ',`style="grid-template-columns:repeat(${c},1fr)" class="rgrid `);
+      if(S.bts&&!S.btsOnly)h+=`<div class="rbts"><p class="rsub" style="margin-bottom:10px">Behind the scenes</p>${rgrid(S.bts,"c3")}</div>`;
     }
-    if(!estoreDone&&/store/i.test(S.title)){estoreDone=true;h+=`<div class="vrow" style="grid-template-columns:minmax(0,640px)">${vtile(VIDS.estore,"16/9","Product Video")}</div>`}
     h+="</div>";
   });
-  if(!estoreDone)h+=`<div class="rsec"><h3 class="gal-title">eStore Product Video</h3><div class="vrow rgrid" style="grid-template-columns:minmax(0,640px)">${vtile(VIDS.estore,"16/9","Product Video")}</div></div>`;
   return h;
 }
 
@@ -926,21 +968,65 @@ richHTML=function(slug){
   return base;
 };
 
-/* ---- Pink Salt Wall: move the product video from the bottom to the top ---- */
-function productVideoToTop(){
-  const root=$("#projectBody");
-  const v=[...root.querySelectorAll(".vtile")].find(t=>/vid-cooking-plate\.mp4/.test((t.querySelector("video.vfg")||t.querySelector("video")).getAttribute("src")||""));
-  if(!v)return;
-  const holder=v.closest(".vrow")||v,oldSec=holder.closest(".rsec"),first=root.querySelector(".rsec");
-  if(!first)return;
-  const ns=document.createElement("div");ns.className="rsec";
-  ns.innerHTML='<h3 class="gal-title">Product <em class="g">Video</em></h3><p class="rsub">eStore product video</p>';
-  ns.appendChild(holder);first.parentNode.insertBefore(ns,first);
-  if(oldSec&&oldSec!==ns&&!oldSec.querySelector(".tile,.vtile,.rgrid,.rbrand,.rai"))oldSec.remove();
-  kickVideos();
+
+/* ============ WORK PAGE containers: preview built automatically from real work (no manual thumbnails) ============ */
+const WK_PREVIEW=[
+  [/sphere/i, {ratio:"4/5",cols:2,items:["gfx-sphere-1","gfx-sphere-2"]}],
+  [/gateway/i,{ratio:"4/5",cols:3,items:["gfx-gateway-1","gfx-gateway-2","gfx-gateway-3"]}],
+  [/crown/i,  {ratio:"1/1",cols:3,items:["gfx-crown-1","gfx-crown-2","gfx-crown-3"],banner:"gfx-crown-banner"}],
+  [/talha/i,  {ratio:"16/9",cols:3,items:["gfx-talha-1","gfx-talha-2","gfx-talha-3"]}]
+];
+function richAds(slug,n){ /* first few real ad/design images already used inside the project page */
+  const out=[];
+  try{
+    const k=Object.keys(RICH).find(x=>slug.includes(x));if(!k)return out;
+    (prunedSections(RICH[k])).forEach(S=>{
+      if(S.btsOnly)return;
+      if(S.brands)S.brands.forEach(b=>(b.items||[]).slice(0,2).forEach(i=>out.push(i)));
+      else if(S.items)S.items.slice(0,2).forEach(i=>out.push(i));
+    });
+  }catch(e){}
+  return out.slice(0,n).map(i=>_p(i)+"-t.webp");
 }
-const _rp=renderProject;
-renderProject=function(slug){const ok=_rp(slug);if(ok&&PINK_RE.test(slug))productVideoToTop();return ok};
+const wkImg=(src,ratio,extra)=>`<span class="wk-i${extra?" "+extra:""}" style="aspect-ratio:${ratio}"><img loading="lazy" decoding="async" src="${src}" alt=""></span>`;
+function wkMedia(p){
+  if(PINK_RE.test(p.slug)){
+    const ads=richAds(p.slug,3),ai=["ai-bricks-2","ai-plate-2","ai-saltite-1","ai-round-2"].map(n=>_m(n)+"-t.webp");
+    const side=[ads[0]||ai[0],ai[0]],strip=[ads[1]||ai[1],ads[2]||ai[2],ai[1],ai[2]].slice(0,4);
+    return `<div class="wk-top"><div class="wk-vid"><video src="media/${VIDS.main}" muted loop autoplay playsinline preload="metadata"></video><span class="reel-tag">Main video</span></div>
+      <div class="wk-side">${side.map(s=>`<span class="wk-i fill"><img loading="lazy" src="${s}" alt=""></span>`).join("")}</div></div>
+      <div class="wk-grid" style="grid-template-columns:repeat(4,minmax(0,1fr))">${strip.map(s=>wkImg(s,"1/1")).join("")}</div>`;
+  }
+  const c=WK_PREVIEW.find(x=>x[0].test(p.slug));
+  if(c){const v=c[1];
+    return `<div class="wk-grid" style="grid-template-columns:repeat(${v.cols},minmax(0,1fr))">${v.items.map(n=>wkImg(_m(n)+"-t.webp",v.ratio)).join("")}${v.banner?wkImg(_m(v.banner)+"-t.webp","851/315","span"):""}</div>`;}
+  const cov=MEDIA.covers[p.slug]?norm(MEDIA.covers[p.slug]):null;
+  if(cov&&cov.type==="img")return `<div class="wk-grid" style="grid-template-columns:1fr">${wkImg(cov.src,"16/9")}</div>`;
+  const ads=richAds(p.slug,3);
+  if(ads.length)return `<div class="wk-grid" style="grid-template-columns:repeat(${ads.length},minmax(0,1fr))">${ads.map(s=>wkImg(s,"4/5")).join("")}</div>`;
+  return `<div class="wk-ph"><span>${p.name.split(" ").map(w=>w[0]).slice(0,2).join("")}</span></div>`;
+}
+function wkPoints(p){
+  const pts=(p.handled&&p.handled.length?p.handled:[p.cardLine]).filter(Boolean).slice(0,2);
+  return `<ul class="wk-pts">${pts.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+}
+function wkCard(p,i,main){
+  return `<a class="wk${main?" main":""}${p.personal?" personal":""}" href="#/work/${p.slug}" data-tags="${p.tags.join(" ")}">
+    <div class="wk-media">${wkMedia(p)}</div>
+    <div class="wk-info"><span class="tag">${p.personal?"Personal channel":p.label}${main?" · Featured":""}</span><h3>${p.name}</h3>${wkPoints(p)}
+    <span class="wk-go">${main?"Explore videos, ads, mockups &amp; AI photography":"View full work"} →</span></div></a>`;
+}
+function wkList(){
+  const ps=PROJECTS.slice().sort((a,b)=>(PINK_RE.test(b.slug)?1:0)-(PINK_RE.test(a.slug)?1:0));
+  return ps.map((p,i)=>wkCard(p,i,i===0&&PINK_RE.test(p.slug))).join("");
+}
+/* freelance: add a Talking Head slot if there isn't one (stays hidden until you add clips, when HIDE_EMPTY is on) */
+try{
+  if(!FREELANCE.some(f=>/talking/i.test((f.key||"")+(f.label||"")))){
+    FREELANCE.unshift({key:"talking-head",label:"Talking Head Edits",line:"Captions, cuts, zooms, b-roll and sound design for talking-head videos.",tags:["video","social","youtube"]});
+  }
+  MEDIA.freelance=MEDIA.freelance||{};if(!MEDIA.freelance["talking-head"])MEDIA.freelance["talking-head"]=[];
+}catch(e){}
 
 renderHome();renderWork();route();
 </script>
