@@ -231,6 +231,55 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
 #lbNext{right:18px;top:50%;margin-top:-23px}
 #lbCount{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:var(--muted);font-size:13px}
 
+
+/* ---------- rich project gallery ---------- */
+.rsec{margin-top:60px}
+.rsec h3.gal-title{margin-bottom:6px}
+.rsub{color:var(--muted);font-size:14.5px;margin-bottom:20px}
+.rgrid{display:grid;gap:12px}
+.rgrid .tile{margin:0;break-inside:auto;border-radius:14px}
+.rgrid .tile img{width:100%;height:100%;object-fit:cover}
+.rgrid.contain .tile img{object-fit:contain;background:#0e0820}
+.rvid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.rslot{border:1.5px dashed rgba(167,139,250,.38);border-radius:16px;background:rgba(139,92,246,.05);display:grid;place-items:center;text-align:center;color:var(--muted);font-size:13px;padding:12px}
+.rslot b{display:block;color:var(--text);font-family:Syne;font-size:14px;margin-bottom:2px}
+.rslot.main{aspect-ratio:16/9;border-color:rgba(192,38,211,.55);background:linear-gradient(160deg,rgba(124,58,237,.14),rgba(192,38,211,.1));font-size:14px}
+.rslot.main b{font-size:20px}
+.rslot.reel{aspect-ratio:9/16}
+.rslot.wide{aspect-ratio:16/9}
+.rbrand{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;margin-bottom:18px}
+.rbrand-h{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.rbrand-h h4{font-family:Syne;font-size:20px}
+.rbrand-h a{font-size:13px;color:var(--p2);font-weight:600}.rbrand-h a:hover{color:#fff}
+.rbrand .rgrid{grid-template-columns:repeat(4,1fr);align-items:start}
+.rbrand .tile{aspect-ratio:4/5}
+.rbrand .rslot.reel{aspect-ratio:4/5}
+.rai{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;margin-bottom:18px}
+.rai-flow.nosrc{grid-template-columns:1fr}.rai-flow.nosrc .rgrid{grid-template-columns:minmax(0,320px)!important}
+.rai-flow{display:grid;grid-template-columns:auto auto 1fr;gap:14px;align-items:center}
+.rai-src{display:flex;flex-direction:column;gap:8px;width:120px}
+.rai-src .tile{aspect-ratio:4/3;background:#fff}
+.rai-src .tile img{object-fit:contain}
+.rai-src small,.rai-res small{color:var(--muted);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+.rai-arrow{font-size:26px;color:var(--p2)}
+.rai-res .rgrid{grid-template-columns:repeat(3,1fr);margin-top:8px}
+.rai-res .tile{aspect-ratio:4/3}
+.rai-cap{color:var(--muted);font-size:13.5px;margin-top:12px}
+.rai-cap b{color:var(--p2)}
+.rbts{margin-top:16px}
+.rbts .rgrid{grid-template-columns:repeat(3,1fr);max-width:520px}
+.rbts .tile{aspect-ratio:4/3}
+@media(max-width:900px){.rgrid.c4{grid-template-columns:repeat(3,1fr)!important}}
+@media(max-width:700px){
+ .rvid{grid-template-columns:1fr}
+ .rbrand .rgrid{grid-template-columns:repeat(3,1fr)}
+ .rbrand .rslot.reel{grid-column:1/-1;aspect-ratio:16/6}
+ .rai-flow{grid-template-columns:1fr}.rai-src{flex-direction:row;width:auto}.rai-src .tile{flex:1}.rai-arrow{transform:rotate(90deg);justify-self:center}
+ .rgrid.c4{grid-template-columns:repeat(2,1fr)!important}
+ .rgrid.c2{grid-template-columns:1fr!important}
+}
+@media(max-width:420px){.rgrid.c3{gap:6px}}
+
 /* ---------- responsive ---------- */
 @media(max-width:1020px){
   .menu-btn{display:block}
@@ -564,6 +613,7 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
 </div>
 
 <script src="content.js"></script>
+<script src="rich.js"></script>
 <script>
 /* ============ helpers ============ */
 const $=s=>document.querySelector(s);
@@ -623,7 +673,7 @@ $("#lb").addEventListener("click",e=>{if(e.target.id==="lb"||e.target.id==="lbBo
 document.addEventListener("keydown",e=>{if(!$("#lb").classList.contains("open"))return;if(e.key==="Escape")closeLB();if(e.key==="ArrowLeft")stepLB(-1);if(e.key==="ArrowRight")stepLB(1)});
 document.addEventListener("click",e=>{
   const t=e.target.closest(".tile");
-  if(t){const g=t.closest(".gallery");const items=REG[g.dataset.key];if(items)openLB(items,+t.dataset.i);return}
+  if(t){const g=t.closest("[data-key]");const items=REG[g.dataset.key];if(items)openLB(items,+t.dataset.i);return}
   const f=e.target.closest(".fcard");
   if(f){const items=REG["fl-"+f.dataset.fl];if(items&&items.length)openLB(items,0)}
 });
@@ -701,11 +751,48 @@ function renderProject(slug){
       <div class="phero-cover" style="--g:${GRADS[idx%GRADS.length]}">${cov?coverEl(cov):"Hero visual goes here"}</div>
     </div>
     <div class="gal-block"><h3 class="gal-title">Overview</h3><p class="overview">${p.overview}</p>${groups}</div>
-    ${p.galleries.map(g=>galleryHTML(g.key,g.label)).join("")}
+    ${richHTML(p.slug)||p.galleries.map(g=>galleryHTML(g.key,g.label)).join("")}
     ${handled}
     ${p.link?`<div class="more" style="text-align:left;margin-top:40px"><a class="btn primary" href="${p.link.url}" target="_blank" rel="noopener">${p.link.text} →</a></div>`:""}
     <div class="sec"><div class="cta-box"><h2>Want something like <em class="g">this?</em></h2><p>Tell me about your brand and I'll help you plan the content.</p><a class="btn primary" href="#/contact">Start a Project →</a></div></div>`;
   return true;
+}
+
+
+/* ============ rich gallery (compact grids, thumb preview, full image in lightbox) ============ */
+let RK=0;
+const rt=(n,key,i)=>`<figure class="tile" data-i="${i}"><img loading="lazy" decoding="async" src="${_p(n)}-t.webp" alt="${n.replace(/-/g,' ')}"></figure>`;
+function rgrid(names,cls,ratio,extra){
+  const key="r"+(++RK);REG[key]=names.map(n=>({type:"img",src:_p(n)+".webp"}));
+  return `<div class="rgrid ${cls||""} ${extra||""}" data-key="${key}">${names.map((n,i)=>rt(n,key,i).replace('<figure class="tile"',`<figure class="tile" style="${ratio?"aspect-ratio:"+ratio:""}"`)).join("")}</div>`;
+}
+function richHTML(slug){
+  const k=Object.keys(RICH).find(x=>slug.includes(x));if(!k)return "";
+  const R=RICH[k];let h="";
+  if(R.video){
+    h+=`<div class="rsec"><h3 class="gal-title">Videos</h3><p class="rsub">Brand video, ads aur UGC</p>
+      <div class="rslot main"><div><b>${R.video.main.label}</b>${R.video.main.note||""}</div></div>
+      <div class="rvid">${R.video.extra.map(v=>`<div class="rslot wide"><div><b>${v.label}</b>coming soon</div></div>`).join("")}</div></div>`;
+  }
+  R.sections.forEach(S=>{
+    h+=`<div class="rsec"><h3 class="gal-title">${S.title}</h3><p class="rsub">${S.sub||""}</p>`;
+    if(S.brands){
+      h+=S.brands.map(b=>`<div class="rbrand"><div class="rbrand-h"><h4>${b.name}</h4><a href="${b.url}" target="_blank" rel="noopener">${b.host} ↗</a></div>
+        ${(()=>{const key="r"+(++RK);REG[key]=b.items.map(n=>({type:"img",src:_p(n)+".webp"}));
+          return `<div class="rgrid" data-key="${key}">${b.items.map((n,i)=>rt(n,key,i)).join("")}<div class="rslot reel"><div><b>Reel</b>coming soon</div></div></div>`})()}</div>`).join("");
+    }else if(S.ai){
+      h+=S.ai.map(a=>`<div class="rai"><div class="rai-flow ${a.source.length?"":"nosrc"}">
+        ${a.source.length?`<div class="rai-src"><small>Source PNG</small>${rgrid(a.source,"c1")}</div><div class="rai-arrow">→</div>`:``}
+        <div class="rai-res"><small>AI frame</small>${rgrid(a.result,"c3","4/3")}</div></div>
+        <p class="rai-cap">${a.source.length?"<b>PNG → AI.</b> ":""}${a.caption}</p></div>`).join("");
+    }else{
+      const c=S.cols||3;
+      h+=rgrid(S.items,"c"+c,S.ratio,"").replace('class="rgrid ',`style="grid-template-columns:repeat(${c},1fr)" class="rgrid `);
+      if(S.bts)h+=`<div class="rbts"><p class="rsub" style="margin-bottom:10px">Behind the scenes</p>${rgrid(S.bts,"c3")}</div>`;
+    }
+    h+="</div>";
+  });
+  return h;
 }
 
 /* ============ contact ============ */
