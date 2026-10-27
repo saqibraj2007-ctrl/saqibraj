@@ -366,6 +366,15 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
 .reel-row .vtile{flex:0 0 210px;width:210px;border-radius:16px;scroll-snap-align:start;cursor:pointer}
 @media(max-width:700px){.reel-row .vtile{flex-basis:170px;width:170px}}
 .rgrid.n3{grid-template-columns:repeat(3,minmax(0,1fr))}
+
+/* ---------- readable card text over thumbnails ---------- */
+.pcard .info{padding-top:96px;background:linear-gradient(to top,rgba(8,4,18,.97) 0%,rgba(8,4,18,.86) 42%,rgba(8,4,18,.45) 72%,rgba(8,4,18,0) 100%)}
+.pcard .tag{color:#e0d0ff;font-size:11.5px}
+.pcard h3,.pcard p{text-shadow:0 2px 14px rgba(0,0,0,.7)}
+.pcard p{color:#ece7fa}
+/* ---------- talking head under featured reels ---------- */
+.th-head{margin:44px 0 20px}.th-head h3{font-size:clamp(24px,3.6vw,34px);margin-bottom:8px}
+#reelsSec .th-block{margin-bottom:0}
 </style>
 </head>
 <body>
@@ -1000,7 +1009,7 @@ function talkingHeadHTML(){
     const src="media/"+f,a='muted loop playsinline preload="none"';
     return `<figure class="tile vtile" data-i="${i}" style="aspect-ratio:1/1"><video class="vfg" src="${src}" ${a}></video><span class="play"></span><span class="reel-tag">Talking Head</span></figure>`;
   }).join("");
-  return `<div class="th-block" data-tags="video"><div class="sec-head"><div class="eyebrow">Freelance</div><h2 class="sec-title">Talking Head <em class="g">Edits</em></h2><p class="lead">Clean cuts, captions and pacing for presenters and personal brands. Click any video to watch with sound.</p></div><div class="th-grid" data-key="${key}">${tiles}</div></div>`;
+  return `<div class="th-block" data-tags="video"><div class="th-head"><h3>Talking Head <em class="g">Edits</em></h3><p class="lead">Clean cuts, captions and pacing for presenters and personal brands. Click any video to watch with sound.</p></div><div class="th-grid" data-key="${key}">${tiles}</div></div>`;
 }
 (function(){
   const st=document.createElement("style");
@@ -1012,42 +1021,51 @@ renderWork=function(){
   _rw();
   // hide the empty "Talking Head" card, the new block replaces it
   const c=document.querySelector('#freelanceGrid .fcard[data-fl="talking-head"]');if(c)c.remove();
-  const g=$("#freelanceGrid");
-  const old=document.querySelector(".th-block");if(old)old.remove();
-  g.insertAdjacentHTML("beforebegin",talkingHeadHTML());
-  kickVideos();
 };
 const _af=applyFilter;
 applyFilter=function(){
   _af();
-  const b=document.querySelector(".th-block");
-  if(b)b.style.display=(CUR_FILTER==="all"||CUR_FILTER==="video")?"":"none";
 };
 
 
 /* =====================================================================
    FINAL POLISH: show only what exists, no empty containers, real covers
    ===================================================================== */
-/* a) real cover images from the content that is already uploaded */
+/* a) website thumbnails: one cover per brand (Pink Salt Wall = 21:9, the rest 16:10) */
 (function(){
-  const cov=(re,file)=>{const p=PROJECTS.find(x=>re.test(x.slug));if(p&&!MEDIA.covers[p.slug])MEDIA.covers[p.slug]=file};
-  try{const k=Object.keys(RICH).find(x=>/pink|psw/i.test(x));
-    if(k){const sec=(RICH[k].sections||[]).find(S=>S.items&&S.items.length);
-      if(sec)cov(/pink|psw/i,_p(sec.items[0])+".webp");}}catch(e){}
-  cov(/sphere/i,"gfx-sphere-1.webp");cov(/gateway/i,"gfx-gateway-1.webp");
-  cov(/crown/i,"gfx-crown-banner.webp");cov(/talha/i,"gfx-talha-1.webp");
+  const cov=(re,file)=>{const p=PROJECTS.find(x=>re.test(x.slug));if(p)MEDIA.covers[p.slug]="media/"+file};
+  cov(/pink|psw/i,"cover-pink-salt-wall.webp");cov(/gateway/i,"cover-gateway-urdu.webp");
+  cov(/sphere/i,"cover-sphere-digital.webp");cov(/crown/i,"cover-crown-rides.webp");
+  cov(/talha/i,"cover-talha-nas-vlogs.webp");
 })();
 /* b) drop projects that have no uploaded content yet (add them back later) */
 (function(){
   const has=p=>CLIENTS.some(c=>c[0].test(p.slug))||Object.keys(RICH).some(k=>p.slug.includes(k))||keepGalleries(p.slug).length>0;
   for(let i=PROJECTS.length-1;i>=0;i--)if(!has(PROJECTS[i]))PROJECTS.splice(i,1);
 })();
-/* c) hero montage: use real covers when no hero media was set */
-(function(){
-  if(list(MEDIA.hero).length)return;
-  const c=PROJECTS.map(p=>MEDIA.covers[p.slug]).filter(Boolean).slice(0,3);
-  if(c.length)MEDIA.hero=c;
-})();
+/* c) hero montage: 1 real ad creative + 2 real posts taken from the Pink Salt Wall page.
+   Auto-picked from its data. To choose by hand, put the 3 image names (as used in rich.js) in HERO_OVERRIDE, e.g. ["my-ad","post-1","post-2"] */
+const HERO_OVERRIDE=[];
+function pswHeroPicks(){
+  if(HERO_OVERRIDE.length>=3)return HERO_OVERRIDE.slice(0,3).map(n=>_p(n)+".webp");
+  try{
+    const k=Object.keys(RICH).find(x=>/pink|psw/i.test(x));if(!k)return null;
+    const skip=/brochure|mockup|thumbnail|store|banner|listing|photograph|behind|video/i,pool=[];
+    (RICH[k].sections||[]).forEach(S=>{
+      if(S.ai||S.btsOnly||skip.test(S.title||""))return;
+      if(S.brands)S.brands.forEach(b=>(b.items||[]).forEach(n=>pool.push({n,t:S.title||"",b:b.name||""})));
+      else(S.items||[]).forEach(n=>pool.push({n,t:S.title||"",b:""}));
+    });
+    if(pool.length<3)return null;
+    const ad=pool.find(x=>/\bads?\b|creative|campaign/i.test(x.t+" "+x.b))||pool[0];
+    const rest=pool.filter(x=>x!==ad);
+    let posts=rest.filter(x=>/post|social/i.test(x.t+" "+x.b));
+    if(posts.length<2)posts=posts.concat(rest.filter(x=>!posts.includes(x)));
+    const p1=posts[0],p2=posts.find(x=>x!==p1&&(x.b!==p1.b||x.t!==p1.t))||posts[1];
+    return [ad,p1,p2].map(x=>_p(x.n)+".webp");
+  }catch(e){return null}
+}
+MEDIA.hero=pswHeroPicks()||["media/gfx-gateway-1.webp","media/gfx-sphere-1.webp","media/gfx-crown-1.webp"];
 /* d) never render empty gallery boxes */
 const _gh=galleryHTML;
 galleryHTML=function(key,label){return list((MEDIA.galleries||{})[key]).length?_gh(key,label):""};
@@ -1092,8 +1110,8 @@ renderWork=function(){
 const _af2=applyFilter;
 applyFilter=function(){
   _af2();
-  const b=document.querySelector(".th-block"),f=$("#freelance");
-  if(f)f.style.display=(b&&b.style.display!=="none")||document.querySelector("#freelanceGrid .fcard")?"":"none";
+  const f=$("#freelance");
+  if(f)f.style.display=document.querySelector("#freelanceGrid .fcard")?"":"none";
 };
 
 /* g) home: featured reels row built from the uploaded reels */
@@ -1102,10 +1120,25 @@ renderHome=function(){
   _rh();
   document.querySelectorAll(".mt.ph").forEach(n=>n.remove());
   const reels=[["reel-gateway.mp4","GatewayUrdu"],["reel-crown.mp4","Crown Rides"],["reel-sphere-1.mp4","Sphere Digital"],["reel-sphere-2.mp4","Sphere Digital"]];
-  const row=$("#reelRow");
-  if(row){row.innerHTML=reels.map(r=>vtile(r[0],"9/16",r[1])).join("");$("#reelsSec").style.display="";pruneEmpty(row);kickVideos()}
+  const row=$("#reelRow"),rs=$("#reelsSec");
+  if(row){row.innerHTML=reels.map(r=>vtile(r[0],"9/16",r[1])).join("");rs.style.display="";pruneEmpty(row);
+    /* Talking Head edits live here now, right under the reels */
+    const old=rs.querySelector(".th-block");if(old)old.remove();
+    rs.insertAdjacentHTML("beforeend",talkingHeadHTML());
+    const tb=rs.querySelector(".th-block");
+    tb.querySelectorAll("video").forEach(v=>v.addEventListener("error",()=>{const t=v.closest(".tile");if(t)t.remove();if(!tb.querySelector(".tile"))tb.remove()},{once:true}));
+    kickVideos()}
   document.querySelectorAll(".pcard>img").forEach(i=>{i.loading="lazy";i.decoding="async";i.addEventListener("error",()=>i.remove(),{once:true})});
   document.querySelectorAll(".pcard .addcover").forEach(n=>n.remove());
+};
+
+/* project page hero: Pink Salt Wall cover is 21:9, the other covers are 16:10 */
+const _rp3=renderProject;
+renderProject=function(slug){
+  const ok=_rp3(slug);
+  if(ok&&!PINK_RE.test(slug)){const c=document.querySelector("#projectBody .phero-cover");
+    if(c){c.style.aspectRatio="16/10";c.style.maxWidth="860px";c.style.width="100%";c.style.marginInline="auto"}}
+  return ok;
 };
 
 renderHome();renderWork();route();
