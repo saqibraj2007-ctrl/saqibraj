@@ -375,6 +375,20 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
 /* ---------- talking head under featured reels ---------- */
 .th-head{margin:44px 0 20px}.th-head h3{font-size:clamp(24px,3.6vw,34px);margin-bottom:8px}
 #reelsSec .th-block{margin-bottom:0}
+
+/* ---------- hero: tall tile is an exact 9:16 reel frame ---------- */
+.montage{width:100%;aspect-ratio:auto;grid-template-columns:calc((100% - 14px)*.55) minmax(0,1fr);grid-template-rows:1fr 1fr}
+.mt:first-child{aspect-ratio:9/16;align-self:start}
+.mt:not(:first-child) img,.mt:not(:first-child) video{position:absolute;inset:0}
+.mt .vtile{position:absolute;inset:0;aspect-ratio:auto!important;height:100%;border-radius:0}
+/* ---------- talking head: 9:16 frames, same size as the reels row, text beside them ---------- */
+#reelsSec .th-block{display:grid;grid-template-columns:minmax(240px,1fr) auto;gap:40px;align-items:center;margin-top:48px}
+#reelsSec .th-head{margin:0}
+#reelsSec .th-head .chips{margin:18px 0 0}
+#reelsSec .th-grid{display:flex;gap:14px;max-width:none;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;-webkit-overflow-scrolling:touch}
+#reelsSec .th-grid .tile{flex:0 0 210px;width:210px;scroll-snap-align:start}
+#reelsSec .th-grid .vfg{object-fit:cover}
+@media(max-width:900px){#reelsSec .th-block{grid-template-columns:minmax(0,1fr);gap:20px}#reelsSec .th-grid .tile{flex-basis:170px;width:170px}}
 </style>
 </head>
 <body>
@@ -1007,9 +1021,9 @@ function talkingHeadHTML(){
   REG[key]=TALKING_HEAD.map(f=>({type:"video",src:"media/"+f}));
   const tiles=TALKING_HEAD.map((f,i)=>{
     const src="media/"+f,a='muted loop playsinline preload="none"';
-    return `<figure class="tile vtile" data-i="${i}" style="aspect-ratio:1/1"><video class="vfg" src="${src}" ${a}></video><span class="play"></span><span class="reel-tag">Talking Head</span></figure>`;
+    return `<figure class="tile vtile" data-i="${i}" style="aspect-ratio:9/16"><video class="vfg" src="${src}" ${a}></video><span class="play"></span><span class="reel-tag">Talking Head</span></figure>`;
   }).join("");
-  return `<div class="th-block" data-tags="video"><div class="th-head"><h3>Talking Head <em class="g">Edits</em></h3><p class="lead">Clean cuts, captions and pacing for presenters and personal brands. Click any video to watch with sound.</p></div><div class="th-grid" data-key="${key}">${tiles}</div></div>`;
+  return `<div class="th-block" data-tags="video"><div class="th-head"><h3>Talking Head <em class="g">Edits</em></h3><p class="lead">Clean cuts, captions and pacing for presenters and personal brands. Click any video to watch with sound.</p><div class="chips"><span class="chip">Clean cuts</span><span class="chip">Captions</span><span class="chip">Pacing</span></div></div><div class="th-grid" data-key="${key}">${tiles}</div></div>`;
 }
 (function(){
   const st=document.createElement("style");
@@ -1140,6 +1154,20 @@ renderProject=function(slug){
     if(c){c.style.aspectRatio="16/10";c.style.maxWidth="860px";c.style.width="100%";c.style.marginInline="auto"}}
   return ok;
 };
+
+/* hero: Salt Room Builder reel in the tall tile (exact 9:16 frame); the ad image comes back if the reel file is missing */
+(function(){
+  const _rh2=renderHome;
+  renderHome=function(){
+    _rh2();
+    const t=document.querySelector("#montage .mt");if(!t)return;
+    const old=t.innerHTML;
+    t.innerHTML=vtile("reel-saltroombuilder.mp4","9/16","Salt Room Builder");
+    const v=t.querySelector("video");
+    if(v)v.addEventListener("error",()=>{t.innerHTML=old},{once:true});
+    kickVideos();
+  };
+})();
 
 renderHome();renderWork();route();
 </script>
